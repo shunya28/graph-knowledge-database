@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "14b3972f4ea51d7d7d4e28b5dd4b88d3848047eb48b553c89bf39b3ccc8e9661"
+            "sha256": "048a952d680912d9d419f6c6aaa3a0d1905702967bae2c18d49da04bc8a31ad3"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -32,6 +32,22 @@
             "index": "pypi",
             "version": "==4.0.3"
         },
+        "django-environ": {
+            "hashes": [
+                "sha256:42593bee519a527602a467c7b682aee1a051c2597f98c45f4f4f44169ecdb6e5",
+                "sha256:6f0bc902b43891656b20486938cba0861dc62892784a44919170719572a534cb"
+            ],
+            "index": "pypi",
+            "version": "==0.8.1"
+        },
+        "django-neomodel": {
+            "hashes": [
+                "sha256:3007811435ae5f5ac4562603f1b5bb3d0519941bb302c8072429da36d592eb7d",
+                "sha256:91b6514aec6bbe9a6cdab8666ec190ebc66bebb9e4a0ab27cc9e6c40c203c9d5"
+            ],
+            "index": "pypi",
+            "version": "==0.0.7"
+        },
         "neo4j-driver": {
             "hashes": [
                 "sha256:59e16752c1bdd72b43f26786183a7b47c17e16c2ec6afd819390623988dff4ff"
@@ -50,7 +66,6 @@
                 "sha256:9049fa006149de741abc0c2b78725f07b90a6a630f3fb43df64efeb9a3a0071b",
                 "sha256:c065e5f8e62388d54486e3c6d08834d3dd574893d5c81b56638f917def681dde"
             ],
-            "index": "pypi",
             "version": "==4.0.8"
         },
         "pytz": {
