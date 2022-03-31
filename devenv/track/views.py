@@ -10,10 +10,26 @@ from neomodel.exceptions import DoesNotExist
 def index(request):
     # return render(request, 'track/index.html')
     # all_persons = Person.nodes.all()
-    all_articles = Article.nodes.all()
+    articles = Article.nodes.all()
+
+    # https://stackoverflow.com/questions/67821341/retrieve-the-relationship-object-in-neomodel
+    relationships = []
+    for article in articles:
+        for article_ref in article.ref:
+            relationships.append(article.ref.relationship(article_ref))
+
+    # for article in articles:
+    #     print(article.uid)
+    
+    # for relationship in relationships:
+    #     print(relationship.name)
+
     context = {
         # 'nodes': all_persons,
-        'nodes': all_articles,
+        'nodes': articles,
+        'edges': relationships,
+        # 'node_ids': [article.uid for article in articles],
+        # 'data': [article.get_param_for_neo4j() for article in articles],
     }
 
     return render(request, 'track/index.html', context)
@@ -37,7 +53,8 @@ def addnode(request):
                 # node_to_add.ref = None
                 pass
             else:
-                node_to_add.ref.connect(node_to_connect)
+                node_to_add.ref.connect(node_to_connect,
+                                        {'uid_start': node_to_add.uid, 'uid_end': node_to_connect.uid})
         # node_to_add.refresh()はいらない？
 
     return HttpResponseRedirect(reverse('track:index'))

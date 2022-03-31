@@ -15,15 +15,28 @@
             var cy = cytoscape({
                 container: $('#cy'),
                 elements: [ // list of graph elements to start with
-                    { // node a
-                        data: { id: 'a' }
-                    },
-                    { // node b
-                        data: { id: 'b' }
-                    },
-                    { // edge ab
-                        data: { id: 'ab', source: 'a', target: 'b' }
-                    }
+                    // autoescape offは、変数をそのまま読み込むと'が&#2za;（うろ覚え）みたいになるから、
+                    // それを避けるために必要
+                    {% autoescape off %}
+                    {% for article in nodes %}
+                    {data: {id: '{{article.uid}}', title: '{{article.title}}'}},
+                    {% endfor %}
+                    {% for rel in edges %}
+                    // 本当ならRelationshipObject.start_node()でNodeObjectを取得できるけど、
+                    // Djangoだと()を付けないらしい。
+                    // 辞書型にも同様の現象あり：https://swiftfe0.hatenablog.com/entry/2017/11/03/002502
+                    {data: {source: '{{rel.start_node.uid}}', target: '{{rel.end_node.uid}}'}},
+                    {% endfor %}
+                    {% endautoescape %}
+                    // { // node a
+                    //     data: { id: 'a' }
+                    // },
+                    // { // node b
+                    //     data: { id: 'b' }
+                    // },
+                    // { // edge ab
+                    //     data: { id: 'ab', source: 'a', target: 'b' }
+                    // }
                 ],
 
                 style: [ // the stylesheet for the graph
@@ -31,7 +44,8 @@
                         selector: 'node',
                         style: {
                             'background-color': '#666',
-                            'label': 'data(id)'
+                            // 'label': 'data(id)'
+                            'label': 'data(title)'
                         }
                     },
 
@@ -42,7 +56,8 @@
                             'line-color': '#ccc',
                             'target-arrow-color': '#ccc',
                             'target-arrow-shape': 'triangle',
-                            'curve-style': 'bezier'
+                            'curve-style': 'bezier',
+                            // 'label': 'data('
                         }
                     }
                 ],
@@ -62,6 +77,7 @@
         <div>
             <p class="test">Hello, Track!</p>
             <p>{{ nodes }}</p>
+            <p>{{ edges }}</p>
         </div>
         <div>
             <form action="{% url 'track:addnode' %}" method="post">
