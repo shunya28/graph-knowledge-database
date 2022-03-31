@@ -12,5 +12,6 @@ class Person(StructuredNode):
 
 
 class Article(StructuredNode):
-    title = StringProperty(required=True)
-    body = StringProperty(required=True)
+    uid = UniqueIdProperty()
+    title = StringProperty(unique_index=True, required=True)
+    body = StringProperty(unique_index=True, required=True)

@@ -18,6 +18,23 @@ def index(request):
 
 
 def addnode(request):
-    testnode = Article(title=request.POST['title'], body=request.POST['body'])
-    testnode.save()
+    try:
+        title = request.POST['title']
+        body = request.POST['body']
+    except(KeyError):
+        pass
+    else:
+        testnode = Article(title=title, body=body)
+        testnode.save()
+    return HttpResponseRedirect(reverse('track:index'))
+
+
+def delnode(request):
+    try:
+        uid = request.POST['uid']
+    except(KeyError):
+        pass
+    else:
+        node = Article.nodes.get(uid=uid)
+        node.delete()
     return HttpResponseRedirect(reverse('track:index'))
