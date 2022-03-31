@@ -15,3 +15,4 @@ class Article(StructuredNode):
     uid = UniqueIdProperty()
     title = StringProperty(unique_index=True, required=True)
     body = StringProperty(unique_index=True, required=True)
+    ref = RelationshipTo('Article', '参照')
