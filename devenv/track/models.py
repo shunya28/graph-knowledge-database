@@ -9,3 +9,8 @@ class Person(StructuredNode):
 
     # Relations :
     friends = RelationshipTo('Person', 'KNOWS')
+
+
+class Article(StructuredNode):
+    title = StringProperty(required=True)
+    body = StringProperty(required=True)
