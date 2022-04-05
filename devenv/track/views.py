@@ -23,6 +23,8 @@ def index(request):
     
     # for relationship in relationships:
     #     print(relationship.name)
+    #     print(dir(relationship))
+    #     print(relationship)
 
     context = {
         # 'nodes': all_persons,

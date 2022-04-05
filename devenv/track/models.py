@@ -16,6 +16,10 @@ class Person(StructuredNode):
 #     # uid = UniqueIdProperty()
 #     uid_start = StringProperty()
 #     uid_end = StringProperty()
+# relationshipで設定した「参照」っていう文字列を取得したい時は、
+# 最悪ここでクラスを継承して文字列のプロパティを持たせて、そこから
+# 取得すれば実現できる
+# それかdb.cyper_query()でtype(r)を取ってくる
 
 
 class Article(StructuredNode):
