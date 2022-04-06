@@ -12,6 +12,7 @@
     <script src="{% static 'track/code.js' %}"></script>
     <script>
         $(function () {
+            
             var cy = cytoscape({
                 container: $('#cy'),
                 elements: [ // list of graph elements to start with
@@ -68,6 +69,30 @@
                 },
                 wheelSensitivity: 0.2,
             });
+
+            cy.on('tap', 'node', function(evt){
+                var node = evt.target;
+                // console.log( 'tapped ' + node.id() );
+
+                // TODO: これの置き場所は冒頭でいいかも
+                {% autoescape off %}
+                const articles = [
+                    {% for article in nodes %}
+                    {'uid': '{{ article.uid }}',
+                     'title': '{{ article.title }}',
+                     'body': '{{ article.body }}'},
+                    {% endfor %}
+                ];
+                {% endautoescape %}
+
+                for(let i = 0; i < articles.length; i++) {
+                    if(node.id() === articles[i].uid) {
+                        $('#article-title').text(articles[i].title);
+                        $('#article-body').text(articles[i].body);
+                        break;
+                    }
+                }
+            });
         });
     </script>
 </head>
@@ -106,8 +131,14 @@
                 </fieldset>
             </form>
         </div>
-        <div class="cytoscape-canvas">
-            <div id="cy"></div>
+        <div>
+            <div class="cytoscape-canvas">
+                <div id="cy"></div>
+            </div>
+            <div class="article-detail">
+                <h2 id="article-title"></h2>
+                <p id="article-body"></p>
+            </div>
         </div>
     </div>
 </body>
