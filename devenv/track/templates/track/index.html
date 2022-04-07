@@ -9,20 +9,14 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.0/cytoscape.min.js"></script>
+    <!-- <script src="https://unpkg.com/dagre@0.7.4/dist/dagre.js"></script>
+    <script src="{% static 'track/cytoscape-dagre.js' %}"></script> -->
+    <script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
+    <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-    <!-- variable definitions for cytoscape_settings.js -->
-    <script>
-        // https://stackoverflow.com/questions/36689075/how-to-use-django-variable-in-javascript-file
-        // const articles = [
-        //             {% for article in nodes %}
-        //             {'uid': '{{ article.uid }}',
-        //              'title': '{{ article.title }}',
-        //              'body': '{{ article.body }}'},
-        //             {% endfor %}
-        //         ];
-    </script>
     <script src="{% static 'track/cytoscape_settings.js' %}"></script>
+    
     <script>
         
         $(function () {
@@ -91,7 +85,7 @@
                 ],
 
                 layout: {
-                    name: 'grid',
+                    name: 'dagre',
                     rows: 1
                 },
                 wheelSensitivity: 0.2,
