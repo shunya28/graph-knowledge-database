@@ -1,31 +1,93 @@
+a {
+    text-decoration: none;
+}
+
+.article-wrapper {
+    width: 700px;
+    height: 100%;
+    background-color: #e5eaee;
+    padding: 20px 40px;
+
+    float: right;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.article-wrapper h2,
+.article-wrapper p {
+    color: #444;
+}
+
+/* https://jajaaan.co.jp/css/button/#zheng_yuanbotan */
+.btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #3474ce;
+    
+    color: #e6e6e6;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 2.4;
+
+    text-align: center;
+    text-decoration: none;
+
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+
+    cursor: pointer;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+}
+
+.btn:hover {
+    background-color: #67a3f8;
+}
+
 body {
     margin: 0;
 }
 
 .container {
-    width: 800px;
+    width: 1170px;
     margin: 0 auto;
 }
 
-.test {
-  color: red;
-}
-
-.cytoscape-canvas {
-    border: 1px solid rgb(175, 175, 175);
-    margin: 10px;
-    float: left;
-    width: 380px;
-}
-
-.article-detail {
-    border: 1px solid rgb(175, 175, 175);
-    margin: 10px;
-    padding: 20px;
-    float: left;
-    width: 320px;
+.contain {
+    width: 800px;
+    padding: 0 15px;
+    margin: 0 auto;
 }
 
 #cy {
-    height: 400px;
+    height: 100%;
+}
+
+.graph-wrapper {
+    height: 100%;
+}
+
+header {
+    height: 65px;
+    width: 100%;
+    background-color: rgba(35, 40, 47, 0.9);
+}
+
+.header-left {
+    float: left;
+}
+
+.header-left a {
+    line-height: 65px;
+    padding: 0 25px;
+    color: #e6e6e6;
+    display: block;
+    font-size: 22px;
+}
+
+.main-wrapper {
+    height: calc(100vh - 65px);
+    position: relative;
 }

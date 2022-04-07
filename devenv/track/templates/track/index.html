@@ -9,6 +9,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.0/cytoscape.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <!-- variable definitions for cytoscape_settings.js -->
     <script>
@@ -26,6 +27,19 @@
         
         $(function () {
             
+            $('#article-detail').hide();
+
+            // TODO: これの置き場所は冒頭でいいかも
+            {% autoescape off %}
+            const articles = [
+                {% for article in nodes %}
+                {'uid': '{{ article.uid }}',
+                    'title': '{{ article.title }}',
+                    'body': '{{ article.body }}'},
+                {% endfor %}
+            ];
+            {% endautoescape %}
+
             var cy = cytoscape({
                 container: $('#cy'),
                 elements: [ // list of graph elements to start with
@@ -86,18 +100,6 @@
             cy.on('tap', 'node', function(evt){
                 var node = evt.target;
                 // console.log( 'tapped ' + node.id() );
-
-                // TODO: これの置き場所は冒頭でいいかも
-                {% autoescape off %}
-                const articles = [
-                    {% for article in nodes %}
-                    {'uid': '{{ article.uid }}',
-                     'title': '{{ article.title }}',
-                     'body': '{{ article.body }}'},
-                    {% endfor %}
-                ];
-                {% endautoescape %}
-
                 for(let i = 0; i < articles.length; i++) {
                     if(node.id() === articles[i].uid) {
                         $('#article-title').text(articles[i].title);
@@ -105,19 +107,41 @@
                         break;
                     }
                 }
+
+                $('#article-detail').show();
+            });
+
+            cy.on('tap', function(event){
+                var evtTarget = event.target;
+                if( evtTarget === cy ){
+                    $('#article-detail').hide();
+                }
             });
         });
     </script>
 </head>
 
 <body>
-    <div class="container">
-        <div>
-            <p class="test">Hello, Track!</p>
-            <p>{{ nodes }}</p>
-            <p>{{ edges }}</p>
+    <header>
+        <div class="container">
+            <div class="header-left">
+                <a href="#">Track</a>
+            </div>
         </div>
+    </header>
+    <div class="main-wrapper">
+        <div class="graph-wrapper">
+            <div id="cy"></div>
+        </div>
+        <div class="article-wrapper" id="article-detail">
+            <h2 id="article-title"></h2>
+            <p id="article-body"></p>
+        </div>
+        <a href="#" class="btn">+</a>
+    </div>
+    <div class="contain">
         <div>
+            <p>{{nodes}}{{edges}}</p>
             <form action="{% url 'track:addnode' %}" method="post">
                 {% csrf_token %}
                 <fieldset>
@@ -143,15 +167,6 @@
                     <input type="submit" value="削除する">
                 </fieldset>
             </form>
-        </div>
-        <div>
-            <div class="cytoscape-canvas">
-                <div id="cy"></div>
-            </div>
-            <div class="article-detail">
-                <h2 id="article-title"></h2>
-                <p id="article-body"></p>
-            </div>
         </div>
     </div>
 </body>
