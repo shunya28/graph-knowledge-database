@@ -9,64 +9,51 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.0/cytoscape.min.js"></script>
-    <!-- <script src="https://unpkg.com/dagre@0.7.4/dist/dagre.js"></script>
-    <script src="{% static 'track/cytoscape-dagre.js' %}"></script> -->
+
     <script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
     <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
-
-    <script src="{% static 'track/cytoscape_settings.js' %}"></script>
     
     <script>
         
+        // viewから渡された変数の展開
+        {% autoescape off %}
+        const articles = [
+            {% for article in nodes %}
+            {'uid': '{{ article.uid }}',
+                'title': '{{ article.title }}',
+                'body': '{{ article.body }}'},
+            {% endfor %}
+        ];
+        {% endautoescape %}
+
         const reference_list = [];
         let colored_nodes = [];
 
         $(function () {
             
-            // TODO: これの置き場所は冒頭でいいかも
-            {% autoescape off %}
-            const articles = [
-                {% for article in nodes %}
-                {'uid': '{{ article.uid }}',
-                    'title': '{{ article.title }}',
-                    'body': '{{ article.body }}'},
-                {% endfor %}
-            ];
-            {% endautoescape %}
-
             const cy = cytoscape({
+
                 container: $('#cy'),
-                elements: [ // list of graph elements to start with
-                    // autoescape offは、変数をそのまま読み込むと'が&#2za;（うろ覚え）みたいになるから、
-                    // それを避けるために必要
+
+                elements: [
                     {% autoescape off %}
+
                     {% for article in nodes %}
-                    {data: {id: '{{article.uid}}', title: '{{article.title}}'}},
+                    { data: { id: '{{article.uid}}', title: '{{article.title}}' } },
                     {% endfor %}
+
                     {% for rel in edges %}
-                    // 本当ならRelationshipObject.start_node()でNodeObjectを取得できるけど、
-                    // Djangoだと()を付けないらしい。
-                    // 辞書型にも同様の現象あり：https://swiftfe0.hatenablog.com/entry/2017/11/03/002502
-                    {data: {source: '{{rel.start_node.uid}}', target: '{{rel.end_node.uid}}'}},
+                    { data: { source: '{{rel.start_node.uid}}', target: '{{rel.end_node.uid}}' } },
                     {% endfor %}
+
                     {% endautoescape %}
-                    // { // node a
-                    //     data: { id: 'a' }
-                    // },
-                    // { // node b
-                    //     data: { id: 'b' }
-                    // },
-                    // { // edge ab
-                    //     data: { id: 'ab', source: 'a', target: 'b' }
-                    // }
                 ],
 
-                style: [ // the stylesheet for the graph
+                style: [
                     {
                         selector: 'node',
                         style: {
                             'background-color': '#666',
-                            // 'label': 'data(id)'
                             'label': 'data(title)'
                         }
                     },
@@ -79,7 +66,6 @@
                             'target-arrow-color': '#ccc',
                             'target-arrow-shape': 'triangle',
                             'curve-style': 'bezier',
-                            // 'label': 'data('
                         }
                     }
                 ],
@@ -88,6 +74,7 @@
                     name: 'dagre',
                     rows: 1
                 },
+
                 wheelSensitivity: 0.2,
             });
 
@@ -95,10 +82,9 @@
             // ノードをクリックしたとき
             cy.on('tap', 'node', function(evt){
                 var node = evt.target;
-                // console.log( 'tapped ' + node.id() );
                 
                 // 今クリックされたノードに色を付ける
-                node.style('background-color', '#ff6b6a');
+                node.style('background-color', '#719ddc');
                 colored_nodes.push(node);
 
                 // 記事の新規作成中は、ノードのidをリストに追加する
@@ -128,12 +114,12 @@
             
             cy.on('tap', function(event){
                 var evtTarget = event.target;
-                // $('#article-create').hide();
                 
                 // 背景をクリックしたとき
                 if( evtTarget === cy ){
                     $('#article-detail').hide();
 
+                    // 新規作成時以外で色付きのノードがある場合、そのノードの色を元に戻す
                     if(colored_nodes.length !== 0 && !($('#article-create').is(":visible"))) {
                         colored_nodes.shift().removeStyle();
                     }
@@ -142,35 +128,10 @@
             
         });
 
-        function show_create_page() {
-            $('#article-detail').hide();
-            $('#article-create').show();
-
-            if(colored_nodes.length !== 0) {
-                colored_nodes.shift().removeStyle();
-            }
-        }
-
-        function hide_article_page() {
-            // 一つ前にクリックされたノードの色をデフォルトに戻す
-            if(colored_nodes !== 0) {
-                colored_nodes.shift().removeStyle();
-            }
-            $('#article-detail').hide();
-        }
-
-        function hide_create_page() {
-            reference_list.length = 0;
-            $('#references').text(reference_list);
-
-            // 色付けされたノードを全て元の色に戻す
-            while(colored_nodes.length !== 0) {
-                colored_nodes.shift().removeStyle();
-            }
-
-            $('#article-create').hide();
-        }
     </script>
+
+    <script src="{% static 'track/cytoscape_settings.js' %}"></script>
+    
 </head>
 
 <body>
@@ -204,26 +165,12 @@
                 <input type="submit" value="投稿する">
             </form>
         </div>
-        <a href="#" class="btn" onclick="show_create_page()">+</a>
+        <a href="#" class="btn btn-new" onclick="show_create_page()">+</a>
+        <a href="#" class="btn btn-del" onclick="show_create_page()">x</a>
     </div>
     <div class="contain">
         <div>
-            <p>{{nodes}}{{edges}}</p>
-            <form action="{% url 'track:addnode' %}" method="post">
-                {% csrf_token %}
-                <fieldset>
-                    <legend>
-                        <h2>記事の新規作成</h2>
-                    </legend>
-                    <p>タイトル<input type="text" name="title" required></p>
-                    <p>本文<textarea name="body" cols="30" rows="10" required></textarea></p>
-                    <p>
-                        参照した記事（カンマ区切りでUIDを入力してください）
-                        <input type="text" name="references">
-                    </p>
-                    <input type="submit" value="投稿する">
-                </fieldset>
-            </form>
+            
             <form action="{% url 'track:delnode' %}" method="post">
                 {% csrf_token %}
                 <fieldset>

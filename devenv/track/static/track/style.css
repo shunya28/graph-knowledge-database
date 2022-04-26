@@ -26,7 +26,6 @@ a {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    background-color: #3474ce;
     
     color: #e6e6e6;
     font-size: 30px;
@@ -36,16 +35,29 @@ a {
     text-align: center;
     text-decoration: none;
 
-    position: absolute;
-    bottom: 50px;
+    position: absolute;    
     left: 50px;
 
     cursor: pointer;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
 
-.btn:hover {
+.btn-new {
+    background-color: #3474ce;
+    bottom: 50px;
+}
+
+.btn-del {
+    background-color: #ff6b6a;
+    bottom: 150px;
+}
+
+.btn-new:hover {
     background-color: #67a3f8;
+}
+
+.btn-del:hover {
+    background-color: #ff9a9a;
 }
 
 body {
