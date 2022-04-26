@@ -13,16 +13,16 @@
     <script src="{% static 'track/cytoscape-dagre.js' %}"></script> -->
     <script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
     <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <script src="{% static 'track/cytoscape_settings.js' %}"></script>
     
     <script>
         
+        const reference_list = [];
+        let colored_nodes = [];
+
         $(function () {
             
-            $('#article-detail').hide();
-
             // TODO: これの置き場所は冒頭でいいかも
             {% autoescape off %}
             const articles = [
@@ -34,7 +34,7 @@
             ];
             {% endautoescape %}
 
-            var cy = cytoscape({
+            const cy = cytoscape({
                 container: $('#cy'),
                 elements: [ // list of graph elements to start with
                     // autoescape offは、変数をそのまま読み込むと'が&#2za;（うろ覚え）みたいになるから、
@@ -91,9 +91,29 @@
                 wheelSensitivity: 0.2,
             });
 
+
+            // ノードをクリックしたとき
             cy.on('tap', 'node', function(evt){
                 var node = evt.target;
                 // console.log( 'tapped ' + node.id() );
+                
+                // 今クリックされたノードに色を付ける
+                node.style('background-color', '#ff6b6a');
+                colored_nodes.push(node);
+
+                // 記事の新規作成中は、ノードのidをリストに追加する
+                if($('#article-create').is(":visible")) {
+                    reference_list.push(node.id());
+                    $('#references').text(reference_list);
+                    return;
+                }
+
+                // 一つ前にクリックされたノードの色をデフォルトに戻す
+                if(colored_nodes[0] !== node) {
+                    colored_nodes.shift().removeStyle();
+                }
+
+                // idの一致するノードを線形探索
                 for(let i = 0; i < articles.length; i++) {
                     if(node.id() === articles[i].uid) {
                         $('#article-title').text(articles[i].title);
@@ -105,13 +125,51 @@
                 $('#article-detail').show();
             });
 
+            
             cy.on('tap', function(event){
                 var evtTarget = event.target;
+                // $('#article-create').hide();
+                
+                // 背景をクリックしたとき
                 if( evtTarget === cy ){
                     $('#article-detail').hide();
+
+                    if(colored_nodes.length !== 0 && !($('#article-create').is(":visible"))) {
+                        colored_nodes.shift().removeStyle();
+                    }
                 }
             });
+            
         });
+
+        function show_create_page() {
+            $('#article-detail').hide();
+            $('#article-create').show();
+
+            if(colored_nodes.length !== 0) {
+                colored_nodes.shift().removeStyle();
+            }
+        }
+
+        function hide_article_page() {
+            // 一つ前にクリックされたノードの色をデフォルトに戻す
+            if(colored_nodes !== 0) {
+                colored_nodes.shift().removeStyle();
+            }
+            $('#article-detail').hide();
+        }
+
+        function hide_create_page() {
+            reference_list.length = 0;
+            $('#references').text(reference_list);
+
+            // 色付けされたノードを全て元の色に戻す
+            while(colored_nodes.length !== 0) {
+                colored_nodes.shift().removeStyle();
+            }
+
+            $('#article-create').hide();
+        }
     </script>
 </head>
 
@@ -127,11 +185,26 @@
         <div class="graph-wrapper">
             <div id="cy"></div>
         </div>
-        <div class="article-wrapper" id="article-detail">
+        <div class="article-wrapper" id="article-detail" style="display: none;">
             <h2 id="article-title"></h2>
             <p id="article-body"></p>
+            <a href="#" onclick="hide_article_page()">x</a>
         </div>
-        <a href="#" class="btn">+</a>
+        <div class="article-wrapper" id="article-create" style="display: none;">
+            <h2>記事の新規作成</h2>
+            <a href="#" onclick="hide_create_page()">x</a>
+            <form action="{% url 'track:addnode' %}" method="post">
+                {% csrf_token %}
+                <p>タイトル<input type="text" name="title" required></p>
+                <p>本文<textarea name="body" cols="30" rows="10" required></textarea></p>
+                <p>
+                    参照した記事（カンマ区切りでUIDを入力してください）
+                    <textarea name="references" id="references" cols="30" rows="10"></textarea>
+                </p>
+                <input type="submit" value="投稿する">
+            </form>
+        </div>
+        <a href="#" class="btn" onclick="show_create_page()">+</a>
     </div>
     <div class="contain">
         <div>

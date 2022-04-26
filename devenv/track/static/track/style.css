@@ -12,6 +12,8 @@ a {
     position: absolute;
     top: 0px;
     right: 0px;
+
+    box-shadow: -4px 0px 6px rgb(88, 88, 88);
 }
 
 .article-wrapper h2,
