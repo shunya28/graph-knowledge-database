@@ -31,6 +31,7 @@
 
         const reference_list = [];
         let colored_nodes = [];
+        let selected_nodes = new SelectedNodes();
 
         $(function () {
             
@@ -88,13 +89,17 @@
                 var node = evt.target;
                 
                 // 今クリックされたノードに色を付ける
-                node.style('background-color', '#719ddc');
-                colored_nodes.push(node);
+                // node.style('background-color', '#719ddc');
+                // colored_nodes.push(node);
+                // SelectedNodes.push(node, '#719ddc');
+                selected_nodes.push_and_color(node, '#719ddc');
+                console.log(selected_nodes.get_nodes);
 
                 // 記事の新規作成中は、ノードのidをリストに追加する
                 if($('#article-create').is(":visible")) {
-                    reference_list.push(node.id());
-                    $('#references').text(reference_list);
+                    // reference_list.push(node.id());
+                    // $('#references').text(reference_list);
+                    $('#references').text(selected_nodes.get_nodes);
                     return;
                 }
 
@@ -106,9 +111,10 @@
                 }
 
                 // 一つ前にクリックされたノードの色をデフォルトに戻す
-                if(colored_nodes[0] !== node) {
-                    colored_nodes.shift().removeStyle();
-                }
+                // if(colored_nodes[0] !== node) {
+                //     colored_nodes.shift().removeStyle();
+                // }
+                selected_nodes.pop_and_decolor();
 
                 // idの一致するノードを線形探索
                 for(let i = 0; i < articles.length; i++) {
@@ -132,8 +138,11 @@
 
                     // 新規作成時以外で色付きのノードがある場合、そのノードの色を元に戻す
                     // TODO: .is(":hidden")で代替可能？
-                    if( colored_nodes.length !== 0 && !($('#article-create').is(":visible")) && !($('#article-delete').is(":visible")) ) {
-                        colored_nodes.shift().removeStyle();
+                    // if( colored_nodes.length !== 0 && !($('#article-create').is(":visible")) && !($('#article-delete').is(":visible")) ) {
+                    //     colored_nodes.shift().removeStyle();
+                    // }
+                    if($('#article-create').is(":hidden") && $('#article-delete').is(":hidden")) {
+                        selected_nodes.pop_and_decolor();
                     }
                 }
             });
