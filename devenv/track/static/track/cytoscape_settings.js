@@ -1,6 +1,17 @@
 function show_create_page() {
     $('#article-detail').hide();
+    $('#article-delete').hide();
     $('#article-create').show();
+
+    if(colored_nodes.length !== 0) {
+        colored_nodes.shift().removeStyle();
+    }
+}
+
+function show_delete_page() {
+    $('#article-detail').hide();
+    $('#article-create').hide();
+    $('#article-delete').show();
 
     if(colored_nodes.length !== 0) {
         colored_nodes.shift().removeStyle();
@@ -25,4 +36,9 @@ function hide_create_page() {
     }
 
     $('#article-create').hide();
+}
+
+function hide_delete_page() {
+
+    $('#article-delete').hide();
 }

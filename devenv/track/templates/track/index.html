@@ -12,7 +12,10 @@
 
     <script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
     <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
-    
+
+    <script src="{% static 'track/cytoscape_settings.js' %}"></script>
+    <script src="{% static 'track/selected_nodes.js' %}"></script>
+
     <script>
         
         // viewから渡された変数の展開
@@ -76,6 +79,7 @@
                 },
 
                 wheelSensitivity: 0.2,
+
             });
 
 
@@ -92,6 +96,13 @@
                     reference_list.push(node.id());
                     $('#references').text(reference_list);
                     return;
+                }
+
+                // 記事の削除中は、ノードのidを削除リストに追加する
+                if($('#article-delete').is(":visible")) {
+                    // reference_list.push(node.id());
+                    // $('#references').text(reference_list);
+                    // return;
                 }
 
                 // 一つ前にクリックされたノードの色をデフォルトに戻す
@@ -120,7 +131,8 @@
                     $('#article-detail').hide();
 
                     // 新規作成時以外で色付きのノードがある場合、そのノードの色を元に戻す
-                    if(colored_nodes.length !== 0 && !($('#article-create').is(":visible"))) {
+                    // TODO: .is(":hidden")で代替可能？
+                    if( colored_nodes.length !== 0 && !($('#article-create').is(":visible")) && !($('#article-delete').is(":visible")) ) {
                         colored_nodes.shift().removeStyle();
                     }
                 }
@@ -130,8 +142,6 @@
 
     </script>
 
-    <script src="{% static 'track/cytoscape_settings.js' %}"></script>
-    
 </head>
 
 <body>
@@ -143,14 +153,17 @@
         </div>
     </header>
     <div class="main-wrapper">
+
         <div class="graph-wrapper">
             <div id="cy"></div>
         </div>
+
         <div class="article-wrapper" id="article-detail" style="display: none;">
             <h2 id="article-title"></h2>
             <p id="article-body"></p>
             <a href="#" onclick="hide_article_page()">x</a>
         </div>
+
         <div class="article-wrapper" id="article-create" style="display: none;">
             <h2>記事の新規作成</h2>
             <a href="#" onclick="hide_create_page()">x</a>
@@ -165,8 +178,21 @@
                 <input type="submit" value="投稿する">
             </form>
         </div>
+        
+        <div class="article-wrapper" id="article-delete" style="display: none;">
+            <h2>記事の削除</h2>
+            <a href="#" onclick="hide_delete_page()">x</a>
+            <form action="{% url 'track:delnode' %}" method="post">
+                {% csrf_token %}
+                <p><textarea name="uid" id="delnodes" cols="30" rows="10"></textarea></p>
+                <!-- <p>ノードのUID<input type="text" name="uid" required></p> -->
+                <input type="submit" value="削除する">
+            </form>
+        </div>
+
         <a href="#" class="btn btn-new" onclick="show_create_page()">+</a>
-        <a href="#" class="btn btn-del" onclick="show_create_page()">x</a>
+        <a href="#" class="btn btn-del" onclick="show_delete_page()">x</a>
+
     </div>
     <div class="contain">
         <div>
