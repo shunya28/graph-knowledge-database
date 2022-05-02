@@ -39,13 +39,13 @@ class SelectedNodes {
         // TODO: popしたものがnullだったらエラー？エラー処理必要ないかも？
         if(this.#nodes.length > 0) {
             // console.log(this.#nodes);
-            this.#nodes.pop().removeStyle();
+            this.#nodes.pop()['node'].removeStyle();
         }
     }
 
     clear_and_decolor() {
         while(this.#nodes.length !== 0) {
-            this.#nodes.pop().removeStyle();
+            this.#nodes.pop()['node'].removeStyle();
         }
     }
 
