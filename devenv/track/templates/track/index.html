@@ -133,17 +133,39 @@
                     decolor_all_nodes();
                     color_node(node, node_color);
                 }
-                else if (now_mode === modes["create"]) {
-                    color_node(node, node_color);
-                    
-                    const ref_list = create_id_list();
-                    $('#references').text(ref_list);
-                }
-                else {  // deleteモードの時
-                    color_node(node, node_color);
+                else {  // 以下、途中までcreateモードとdeleteモードの共通処理
 
-                    const del_list = create_id_list();
-                    $('#delnodes').text(del_list);
+                    // クリックされたノードが既にリスト内に存在するかチェック
+                    let is_node_in_list = false;
+                    let node_idx = null;
+                    for(let i = 0; i < clicked_node_list.length; i++) {
+                        if(node === clicked_node_list[i]) {
+                            is_node_in_list = true;
+                            node_idx = i;
+                            break;
+                        }
+                    }
+
+                    // クリックしたノードが色無しなら色を付け、色付きなら色を無くす処理
+                    if(is_node_in_list) {
+                        const del_node_list = clicked_node_list.splice(node_idx, 1);
+                        
+                        for(let i = 0; i < del_node_list.length; i++) {
+                            del_node_list[i].removeStyle();
+                        }
+                    }
+                    else {
+                        color_node(node, node_color);
+                    }                 
+                    
+                    if(now_mode === modes["create"]) {
+                        const ref_list = create_id_list();
+                        $('#references').text(ref_list);
+                    }
+                    else {  // deleteモードの時
+                        const del_list = create_id_list();
+                        $('#delnodes').text(del_list);
+                    }                    
                 }
                 
             });
