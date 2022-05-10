@@ -13,9 +13,6 @@
     <script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
     <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
 
-    <script src="{% static 'track/cytoscape_settings.js' %}"></script>
-    <script src="{% static 'track/selected_nodes.js' %}"></script>
-
     <script>
         
         // viewから渡された変数の展開
@@ -32,22 +29,21 @@
         // 状態の定義
         const modes = {
             normal: 1,
-            create: 2,
-            delete: 3
+            create: 2,  // 記事の新規作成画面が表示されている状態
+            delete: 3   // 記事の削除画面が表示されている状態
         };
 
-        // const reference_list = [];
-        // let colored_nodes = [];
-        // let selected_nodes = new SelectedNodes();
-        let now_mode = modes["normal"];
+        let now_mode = modes["normal"];  // 現在の画面状態を表す変数
         const clicked_node_list = [];
         const node_color = '#719ddc';
 
+        // ノードに色付けすると同時に、クリックされたノードとしてリストに保持する
         const color_node = (node, color) => {
             node.style('background-color', color);
             clicked_node_list.push(node);
         };
 
+        // 全てのノードの色を元に戻し、リストも空にする
         const decolor_all_nodes = () => {
             while(clicked_node_list.length !== 0) {
                 const node = clicked_node_list.pop();
@@ -67,18 +63,7 @@
 
         $(function () {
 
-            // const get_current_mode = () => {
-            //     if($('#article-create').is(":visible")) {
-            //         return "create";
-            //     }
-                
-            //     if($('#article-delete').is(":visible")) {
-            //         return "delete";
-            //     }
-
-            //     return "normal";
-            // };
-            
+            // cytoscapeの基本設定
             const cy = cytoscape({
 
                 container: $('#cy'),
@@ -161,45 +146,6 @@
                     $('#delnodes').text(del_list);
                 }
                 
-                // 今クリックされたノードに色を付ける
-                // node.style('background-color', '#719ddc');
-                // colored_nodes.push(node);
-                // SelectedNodes.push(node, '#719ddc');
-                // selected_nodes.push_and_color(node, '#719ddc');
-                // console.log(selected_nodes.get_nodes);
-                
-
-                // 記事の新規作成中は、ノードのidをリストに追加する
-                // if($('#article-create').is(":visible")) {
-                    // reference_list.push(node.id());
-                    // $('#references').text(reference_list);
-                    // $('#references').text(selected_nodes.get_nodes['id']);
-                //     return;
-                // }
-
-                // 記事の削除中は、ノードのidを削除リストに追加する
-                // if($('#article-delete').is(":visible")) {
-                    // reference_list.push(node.id());
-                    // $('#references').text(reference_list);
-                //     return;
-                // }
-
-                // 一つ前にクリックされたノードの色をデフォルトに戻す
-                // if(colored_nodes[0] !== node) {
-                //     colored_nodes.shift().removeStyle();
-                // }
-                // selected_nodes.pop_and_decolor();
-
-                // idの一致するノードを線形探索
-                // for(let i = 0; i < articles.length; i++) {
-                //     if(node.id() === articles[i].uid) {
-                //         $('#article-title').text(articles[i].title);
-                //         $('#article-body').text(articles[i].body);
-                //         break;
-                //     }
-                // }
-
-                // $('#article-detail').show();
             });
 
             
@@ -215,18 +161,8 @@
                         decolor_all_nodes();
                     }
 
-                    // 新規作成時以外で色付きのノードがある場合、そのノードの色を元に戻す
-                    // TODO: .is(":hidden")で代替可能？
-                    // if( colored_nodes.length !== 0 && !($('#article-create').is(":visible")) && !($('#article-delete').is(":visible")) ) {
-                    //     colored_nodes.shift().removeStyle();
-                    // }
-                    // if($('#article-create').is(":hidden") && $('#article-delete').is(":hidden")) {
-                        // selected_nodes.pop_and_decolor();
-                    // }
                 }
-            });
-
-            
+            });          
 
         });
 
@@ -242,8 +178,6 @@
         };
 
         const hide_create_page = () => {
-            // reference_list.length = 0;
-            // $('#references').text(reference_list);
 
             decolor_all_nodes();
             $('#article-create').hide();
