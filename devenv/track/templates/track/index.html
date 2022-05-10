@@ -167,6 +167,11 @@
                         $('#delnodes').text(del_list);
                     }                    
                 }
+
+                // フォームの二重送信防止
+                $('form').on('submit', function() {
+                    $('.submit-button').prop('disabled', true);
+                });
                 
             });
 
@@ -258,27 +263,23 @@
             <a href="#" onclick="hide_create_page()">×</a>
             <h2>記事の新規作成</h2>
             <form action="{% url 'track:addnode' %}" method="post">
-                {% csrf_token %}
-                
+                {% csrf_token %}                
                 <p>
                     <label for="add-title">タイトル</label>
                     <br>
                     <input type="text" name="title" id="add-title" required>
                 </p>
-
                 <p>
                     <label for="add-body">本文</label>
                     <br>
                     <textarea id="add-body" name="body" cols="30" rows="10" required></textarea>
                 </p>
-
                 <p>
-                    <label for="references">参照した記事</label>
+                    <label for="references">参照した記事がある場合、そのノードをクリックして選択してください。</label>
                     <br>
-                    <textarea name="references" id="references" cols="30" rows="10"></textarea>
+                    <textarea name="references" id="references" cols="30" rows="10" hidden></textarea>
                 </p>
-
-                <input type="submit" value="投稿する">
+                <input class="submit-button" type="submit" value="投稿する">
             </form>
         </div>
         
@@ -287,9 +288,10 @@
             <h2>記事の削除</h2>
             <form action="{% url 'track:delnode' %}" method="post">
                 {% csrf_token %}
-                <label for="uid">削除するノードのID</label>
-                <textarea name="uid" id="delnodes" cols="30" rows="10" required></textarea>
-                <input type="submit" value="削除する">
+                <label for="uid">削除するノードを選択してください。</label>
+                <textarea name="uid" id="delnodes" cols="30" rows="10" required hidden></textarea>
+                <br>
+                <input class="submit-button" type="submit" value="選択した記事を削除する">
             </form>
         </div>
 
