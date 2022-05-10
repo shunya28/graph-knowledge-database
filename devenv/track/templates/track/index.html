@@ -288,9 +288,10 @@
             <h2>記事の削除</h2>
             <form action="{% url 'track:delnode' %}" method="post">
                 {% csrf_token %}
-                <label for="uid">削除するノードを選択してください。</label>
-                <textarea name="uid" id="delnodes" cols="30" rows="10" required hidden></textarea>
-                <br>
+                <p>
+                    <label for="uid">削除するノードを選択してください。</label>
+                    <textarea name="uid" id="delnodes" cols="30" rows="10" required hidden></textarea>
+                </p>
                 <input class="submit-button" type="submit" value="選択した記事を削除する">
             </form>
         </div>
