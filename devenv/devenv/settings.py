@@ -18,7 +18,7 @@ import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Read environment variables from .env
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env()
 env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_neomodel',
+    'track.apps.TrackConfig',
     'track',
 ]
 
