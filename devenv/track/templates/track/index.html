@@ -29,11 +29,55 @@
         ];
         {% endautoescape %}
 
-        const reference_list = [];
-        let colored_nodes = [];
-        let selected_nodes = new SelectedNodes();
+        // 状態の定義
+        const modes = {
+            normal: 1,
+            create: 2,
+            delete: 3
+        };
+
+        // const reference_list = [];
+        // let colored_nodes = [];
+        // let selected_nodes = new SelectedNodes();
+        let now_mode = modes["normal"];
+        const clicked_node_list = [];
+        const node_color = '#719ddc';
+
+        const color_node = (node, color) => {
+            node.style('background-color', color);
+            clicked_node_list.push(node);
+        };
+
+        const decolor_all_nodes = () => {
+            while(clicked_node_list.length !== 0) {
+                const node = clicked_node_list.pop();
+                node.removeStyle();
+            }
+        };
+
+        // ノードのリストからidのリストを生成する
+        const create_id_list = () => {
+            const id_list = [];
+            for(let i = 0; i < clicked_node_list.length; i++) {  // for in構文を使うとなぜか要素を取り出せず、node.id()でエラーが出る
+                const node = clicked_node_list[i]
+                id_list.push(node.id());
+            }
+            return id_list;
+        };
 
         $(function () {
+
+            // const get_current_mode = () => {
+            //     if($('#article-create').is(":visible")) {
+            //         return "create";
+            //     }
+                
+            //     if($('#article-delete').is(":visible")) {
+            //         return "delete";
+            //     }
+
+            //     return "normal";
+            // };
             
             const cy = cytoscape({
 
@@ -83,71 +127,152 @@
 
             });
 
-
             // ノードをクリックしたとき
             cy.on('tap', 'node', function(evt){
+
                 var node = evt.target;
+
+                if(now_mode === modes["normal"]) {
+
+                    // idの一致するノードを線形探索し、記事を表示する
+                    for(let i = 0; i < articles.length; i++) {
+                        if(node.id() === articles[i].uid) {
+                            $('#article-title').text(articles[i].title);
+                            $('#article-body').text(articles[i].body);
+                            break;
+                        }
+                    }
+                    $('#article-detail').show();
+                    
+                    // ノードに色を付ける
+                    decolor_all_nodes();
+                    color_node(node, node_color);
+                }
+                else if (now_mode === modes["create"]) {
+                    color_node(node, node_color);
+                    
+                    const ref_list = create_id_list();
+                    $('#references').text(ref_list);
+                }
+                else {  // deleteモードの時
+                    color_node(node, node_color);
+
+                    const del_list = create_id_list();
+                    $('#delnodes').text(del_list);
+                }
                 
                 // 今クリックされたノードに色を付ける
                 // node.style('background-color', '#719ddc');
                 // colored_nodes.push(node);
                 // SelectedNodes.push(node, '#719ddc');
-                selected_nodes.push_and_color(node, '#719ddc');
-                console.log(selected_nodes.get_nodes);
+                // selected_nodes.push_and_color(node, '#719ddc');
+                // console.log(selected_nodes.get_nodes);
+                
 
                 // 記事の新規作成中は、ノードのidをリストに追加する
-                if($('#article-create').is(":visible")) {
+                // if($('#article-create').is(":visible")) {
                     // reference_list.push(node.id());
                     // $('#references').text(reference_list);
-                    $('#references').text(selected_nodes.get_nodes['id']);
-                    return;
-                }
+                    // $('#references').text(selected_nodes.get_nodes['id']);
+                //     return;
+                // }
 
                 // 記事の削除中は、ノードのidを削除リストに追加する
-                if($('#article-delete').is(":visible")) {
+                // if($('#article-delete').is(":visible")) {
                     // reference_list.push(node.id());
                     // $('#references').text(reference_list);
-                    // return;
-                }
+                //     return;
+                // }
 
                 // 一つ前にクリックされたノードの色をデフォルトに戻す
                 // if(colored_nodes[0] !== node) {
                 //     colored_nodes.shift().removeStyle();
                 // }
-                selected_nodes.pop_and_decolor();
+                // selected_nodes.pop_and_decolor();
 
                 // idの一致するノードを線形探索
-                for(let i = 0; i < articles.length; i++) {
-                    if(node.id() === articles[i].uid) {
-                        $('#article-title').text(articles[i].title);
-                        $('#article-body').text(articles[i].body);
-                        break;
-                    }
-                }
+                // for(let i = 0; i < articles.length; i++) {
+                //     if(node.id() === articles[i].uid) {
+                //         $('#article-title').text(articles[i].title);
+                //         $('#article-body').text(articles[i].body);
+                //         break;
+                //     }
+                // }
 
-                $('#article-detail').show();
+                // $('#article-detail').show();
             });
 
             
             cy.on('tap', function(event){
+                
                 var evtTarget = event.target;
                 
                 // 背景をクリックしたとき
                 if( evtTarget === cy ){
-                    $('#article-detail').hide();
+
+                    if(now_mode === modes["normal"]) {
+                        $('#article-detail').hide();
+                        decolor_all_nodes();
+                    }
 
                     // 新規作成時以外で色付きのノードがある場合、そのノードの色を元に戻す
                     // TODO: .is(":hidden")で代替可能？
                     // if( colored_nodes.length !== 0 && !($('#article-create').is(":visible")) && !($('#article-delete').is(":visible")) ) {
                     //     colored_nodes.shift().removeStyle();
                     // }
-                    if($('#article-create').is(":hidden") && $('#article-delete').is(":hidden")) {
-                        selected_nodes.pop_and_decolor();
-                    }
+                    // if($('#article-create').is(":hidden") && $('#article-delete').is(":hidden")) {
+                        // selected_nodes.pop_and_decolor();
+                    // }
                 }
             });
+
             
+
         });
+
+        const show_create_page = () => {
+            $('#article-detail').hide();
+            $('#article-delete').hide();
+
+            now_mode = modes["create"];
+            decolor_all_nodes();
+            $('#references').text("");
+
+            $('#article-create').show();
+        };
+
+        const hide_create_page = () => {
+            // reference_list.length = 0;
+            // $('#references').text(reference_list);
+
+            decolor_all_nodes();
+            $('#article-create').hide();
+
+            now_mode = modes["normal"];
+        };
+
+        const show_delete_page = () => {
+            $('#article-detail').hide();
+            $('#article-create').hide();
+
+            now_mode = modes["delete"];
+            decolor_all_nodes();
+            $('#delnodes').text("");
+
+            $('#article-delete').show();
+        };
+
+        const hide_delete_page = () => {
+            decolor_all_nodes();
+            $('#article-delete').hide();
+
+            now_mode = modes["normal"];
+        };
+
+        const hide_article_page = () => {
+            decolor_all_nodes();
+            $('#article-detail').hide();
+        };
 
     </script>
 
