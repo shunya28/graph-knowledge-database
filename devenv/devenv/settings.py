@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_neomodel',
     'track.apps.TrackConfig',
-    'track',
 ]
 
 MIDDLEWARE = [
