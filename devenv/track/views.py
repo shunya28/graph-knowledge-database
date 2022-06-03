@@ -1,6 +1,6 @@
 from platform import node
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .models import Person, Article
 from neomodel.exceptions import DoesNotExist
@@ -71,3 +71,7 @@ def delnode(request):
         node_to_delete = Article.nodes.get(uid=uid)
         node_to_delete.delete()
     return HttpResponseRedirect(reverse('track:index'))
+
+
+def login(request):
+    return HttpResponse('Login page')

@@ -129,3 +129,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Settings of neomodel
 config.DATABASE_URL = env('NEO4J_BOLT_URL')
+
+# Settings of login functions
+LOGIN_URL = '/track/login'
+LOGIN_REDIRECT_URL = '/track'
+LOGOUT_REDIRECT_URL = '/track'
