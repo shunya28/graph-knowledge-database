@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_neomodel',
     'track.apps.TrackConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 config.DATABASE_URL = env('NEO4J_BOLT_URL')
 
 # Settings of login functions
-LOGIN_URL = '/track/login'
-LOGIN_REDIRECT_URL = '/track'
-LOGOUT_REDIRECT_URL = '/track'
+LOGIN_URL = '/track/login'  # ログインが必要なページに未認証ユーザがアクセスした場合にリダイレクトするURL
+LOGIN_REDIRECT_URL = '/track'  # ログイン後にリダイレクトされるURL
+LOGOUT_REDIRECT_URL = '/track'  # ログアウト後にリダイレクトされるURL

@@ -71,7 +71,3 @@ def delnode(request):
         node_to_delete = Article.nodes.get(uid=uid)
         node_to_delete.delete()
     return HttpResponseRedirect(reverse('track:index'))
-
-
-def login(request):
-    return HttpResponse('Login page')
