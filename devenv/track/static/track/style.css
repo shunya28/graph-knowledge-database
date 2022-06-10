@@ -117,6 +117,15 @@ header {
     font-size: 18px;
 }
 
+.login-wrapper {
+    width: 200px;
+    margin: 0 auto;
+}
+
+.login-wrapper h2 {
+    text-align: center;
+}
+
 .main-wrapper {
     height: calc(100vh - 65px);
     position: relative;
