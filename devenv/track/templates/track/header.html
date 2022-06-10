@@ -5,8 +5,18 @@
         <div class="header-left">
             <a href="{% url 'track:index' %}">Track</a>
         </div>
-        <div class="header-right">
-            <a href="{% url 'accounts:login' %}">ログイン</a>
-        </div>
+        {% if user.is_authenticated %}
+            <div class="header-right">
+                <a href="{% url 'accounts:logout' %}">ログアウト</a>
+            </div>
+            <div class="header-right">
+                <a href="#">{{ user.get_username }}</a>
+            </div>
+        {% endif %}
+        {% if not user.is_authenticated %}
+            <div class="header-right">
+                <a href="{% url 'accounts:login' %}">ログイン</a>
+            </div>
+        {% endif %}
     </div>
 </header>

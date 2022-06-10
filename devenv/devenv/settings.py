@@ -108,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -132,6 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 config.DATABASE_URL = env('NEO4J_BOLT_URL')
 
 # Settings of login functions
-LOGIN_URL = '/login'  # ログインが必要なページに未認証ユーザがアクセスした場合にリダイレクトするURL
-LOGIN_REDIRECT_URL = '/'  # ログイン後にリダイレクトされるURL
-LOGOUT_REDIRECT_URL = '/'  # ログアウト後にリダイレクトされるURL
+LOGIN_URL = 'accounts:login'  # ログインが必要なページに未認証ユーザがアクセスした場合にリダイレクトするURL
+LOGIN_REDIRECT_URL = 'track:index'  # ログイン後にリダイレクトされるURL
+LOGOUT_REDIRECT_URL = 'track:index'  # ログアウト後にリダイレクトされるURL
