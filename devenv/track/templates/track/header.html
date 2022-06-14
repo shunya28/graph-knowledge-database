@@ -15,6 +15,9 @@
         {% endif %}
         {% if not user.is_authenticated %}
             <div class="header-right">
+                <a href="{% url 'accounts:signup' %}">会員登録</a>
+            </div>
+            <div class="header-right">
                 <a href="{% url 'accounts:login' %}">ログイン</a>
             </div>
         {% endif %}
