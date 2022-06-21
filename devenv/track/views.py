@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Article
-from . import views
+from django.views import View
 from neomodel.exceptions import DoesNotExist
 
 
@@ -75,6 +75,6 @@ def delnode(request):
 
 
 # new experiment since 2022/6/21
-class Index(LoginRequiredMixin, views.View):
+class Index(LoginRequiredMixin, View):
     def get(self, request):
         pass
