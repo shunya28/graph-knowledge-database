@@ -2,7 +2,7 @@ from platform import node
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from .models import Person, Article
+from .models import Article
 from neomodel.exceptions import DoesNotExist
 
 

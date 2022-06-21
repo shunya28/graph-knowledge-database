@@ -1,6 +1,16 @@
-from tokenize import String
 from django.db import models
-from neomodel import StructuredNode, StringProperty, UniqueIdProperty, RelationshipTo, StructuredRel
+from neomodel import (
+    StructuredNode,
+    StringProperty,
+    UniqueIdProperty,
+    IntegerProperty,
+    DateTimeProperty,
+    RelationshipTo,
+    RelationshipFrom,
+    StructuredRel,
+    OneOrMore,
+)
+from datetime import datetime, timezone
 
 
 # Create your models here.
@@ -33,3 +43,32 @@ class Article(StructuredNode):
     # 第３引数が無いと「Relationship properties without using a relationship model is no longer supported.」ってneomodelに言われた
     # views.pyのconnect()でエラーraiseされるらしい
     # ref = RelationshipTo('Article', '参照')
+
+
+# new experiment since 2022/6/21
+class ArticleRel2(StructuredRel):
+    creation_date = DateTimeProperty(default_now=True)
+    likes = IntegerProperty(default=0)
+
+
+class Article2(StructuredNode):
+    creation_date = DateTimeProperty(default_now=True)
+    # edit_date = DateTimeProperty()
+    title = StringProperty(required=True)
+    body = StringProperty(required=True)
+
+    reference = RelationshipTo('Article2', 'refers_to', model=ArticleRel2)
+    next_article = RelationshipTo('Article2', 'comes_before', model=ArticleRel2)
+    related_tech = RelationshipTo('TechCategory', 'describes')  # , cardinality=OneOrMore)
+
+
+class TechCategory(StructuredNode):
+    name = StringProperty(required=True)
+
+    # article = RelationshipFrom('Article2', 'describes', cardinality=OneOrMore)
+    parent_tech = RelationshipTo('TechCategory', 'is_part_of')
+    related_area = RelationshipTo('AreaCategory', 'is_part_of')
+
+
+class AreaCategory(StructuredNode):
+    name = StringProperty(required=True)
