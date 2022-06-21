@@ -14,7 +14,7 @@ class Login(LoginView):
 
 class Logout(LoginRequiredMixin, LogoutView):
     """ログアウトページ"""
-    template_name = 'track/index.html'
+    template_name = 'accounts/login.html'
 
 
 class Signup(CreateView):

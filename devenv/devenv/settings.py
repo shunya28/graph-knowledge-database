@@ -134,4 +134,4 @@ config.DATABASE_URL = env('NEO4J_BOLT_URL')
 # Settings of login functions
 LOGIN_URL = 'accounts:login'  # ログインが必要なページに未認証ユーザがアクセスした場合にリダイレクトするURL
 LOGIN_REDIRECT_URL = 'track:index'  # ログイン後にリダイレクトされるURL
-LOGOUT_REDIRECT_URL = 'track:index'  # ログアウト後にリダイレクトされるURL
+LOGOUT_REDIRECT_URL = 'accounts:login'  # ログアウト後にリダイレクトされるURL

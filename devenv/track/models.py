@@ -6,11 +6,8 @@ from neomodel import (
     IntegerProperty,
     DateTimeProperty,
     RelationshipTo,
-    RelationshipFrom,
     StructuredRel,
-    OneOrMore,
 )
-from datetime import datetime, timezone
 
 
 # Create your models here.
