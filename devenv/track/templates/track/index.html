@@ -9,10 +9,12 @@
     <link rel="stylesheet" href="{% static 'track/style.css' %}">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.0/cytoscape.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.0/cytoscape.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.2/cytoscape.umd.js" integrity="sha512-f2pi4FT6LCwl93apc24uOUnAg8FtnkcSI1TLTQ96We8bzniiO8z7+S6qXBthmvJSFORTTjCmQL82MY7Jhi5FVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
     <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
+
 
     <script>
         
@@ -67,7 +69,7 @@
             // cytoscapeの基本設定
             const cy = cytoscape({
 
-                "container": $('#cy'),
+                container: $('#cy'),
                 
                 {% autoescape off %}
                 elements: {{ graph_data }},
@@ -286,6 +288,7 @@
         <a href="#" class="btn btn-del" onclick="show_delete_page()">×</a>
 
     </div>
+    <script src="{% static 'track/cytoscape_settings.js' %}" async></script>
 </body>
 
 </html>
