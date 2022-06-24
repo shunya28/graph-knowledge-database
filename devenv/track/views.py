@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Article
 from django.views import View
 from neomodel.exceptions import DoesNotExist
+from neomodel import db, StructuredNode, StructuredRel
 
 
 def index(request):
@@ -17,15 +18,33 @@ def index(request):
     relationships = []
     for article in articles:
         for article_ref in article.ref:
+            print(type(article_ref))
             relationships.append(article.ref.relationship(article_ref))
 
+    # print(relationships)
+
+    # from neomodel import db, StructuredRel
+    # results, meta = db.cypher_query("match (n)-[r]->() return r")
+    # print(results)
+    # print(StructuredRel.inflate(results[0][0]).start_node())
+
     # for article in articles:
-    #     print(article.uid)
+    #     print(article)
+
+    # test_rels = articles[0].ref.all_relationships(articles[0].ref)
+    # for article in articles:
+    #     for j in range(len(articles)):
+    #         print(type(article.nodes))
+    #         # tmp = article.all_relationships(articles[j])
+    #         # test_rels.append(tmp)
+
+    # print(test_rels)
     
     # for relationship in relationships:
     #     print(relationship.name)
     #     print(dir(relationship))
-    #     print(relationship)
+        # print(relationship.id)
+        # print(relationship.start_node())
 
     context = {
         # 'nodes': all_persons,
@@ -77,4 +96,17 @@ def delnode(request):
 # new experiment since 2022/6/21
 class Index(LoginRequiredMixin, View):
     def get(self, request):
-        pass
+
+        nodes, meta = db.cypher_query('MATCH (n)-[]->() RETURN n')
+        rels, meta = db.cypher_query('MATCH ()-[r]->() RETURN r')
+
+        # nodes = [StructuredNode.inflate(row[0]) for row in nodes]
+        rels = [StructuredRel.inflate(row[0]) for row in rels]
+        # results, meta = db.cypher_query("match (n)-[r]->() return r")
+        # print(results)
+        # print(StructuredRel.inflate(results[0][0]).start_node())
+
+        graph_list = []
+        print(Article.inflate(nodes[0][0]))
+        context = {}
+        return render(request, 'track/index.html', context)
