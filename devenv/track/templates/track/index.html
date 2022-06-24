@@ -68,20 +68,10 @@
             const cy = cytoscape({
 
                 "container": $('#cy'),
-
-                elements: [
-                    {% autoescape off %}
-
-                    {% for article in nodes %}
-                    { data: { id: '{{article.uid}}', title: '{{article.title}}' } },
-                    {% endfor %}
-
-                    {% for rel in edges %}
-                    { data: { source: '{{rel.start_node.uid}}', target: '{{rel.end_node.uid}}' } },
-                    {% endfor %}
-
-                    {% endautoescape %}
-                ],
+                
+                {% autoescape off %}
+                elements: {{ graph_data }},
+                {% endautoescape %}
 
                 style: [
                     {
