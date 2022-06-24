@@ -30,8 +30,8 @@ class ArticleRel(StructuredRel):
 # 取得すれば実現できる
 # それかdb.cyper_query()でtype(r)を取ってくる
 
-
-class Article(StructuredNode):
+# deprecated
+class _Article(StructuredNode):
     uid = UniqueIdProperty()
     title = StringProperty(unique_index=True, required=True)
     body = StringProperty(unique_index=True, required=True)
@@ -43,19 +43,24 @@ class Article(StructuredNode):
 
 
 # new experiment since 2022/6/21
-class ArticleRel2(StructuredRel):
+class Reference(StructuredRel):
     creation_date = DateTimeProperty(default_now=True)
     likes = IntegerProperty(default=0)
 
 
-class Article2(StructuredNode):
+class Sequence(StructuredRel):
+    creation_date = DateTimeProperty(default_now=True)
+    likes = IntegerProperty(default=0)
+
+
+class Article(StructuredNode):
     creation_date = DateTimeProperty(default_now=True)
     # edit_date = DateTimeProperty()
     title = StringProperty(required=True)
     body = StringProperty(required=True)
 
-    reference = RelationshipTo('Article2', 'refers_to', model=ArticleRel2)
-    next_article = RelationshipTo('Article2', 'comes_before', model=ArticleRel2)
+    reference = RelationshipTo('Article', 'refers_to', model=Reference)
+    next_article = RelationshipTo('Article', 'next', model=Sequence)
     related_tech = RelationshipTo('TechCategory', 'describes')  # , cardinality=OneOrMore)
 
 

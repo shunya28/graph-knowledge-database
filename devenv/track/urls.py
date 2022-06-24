@@ -4,8 +4,7 @@ from . import views
 app_name = 'track'
 
 urlpatterns = [
-    path('', views.index, name='index'),
+    path('', views.Index.as_view(), name='index'),
     path('addnode/', views.addnode, name='addnode'),
     path('delnode/', views.delnode, name='delnode'),
-    path('test/', views.Index.as_view(), name='test'),
 ]
