@@ -64,128 +64,128 @@
             return id_list;
         };
 
-        $(function () {
+        // $(function () {
 
-            // cytoscapeの基本設定
-            const cy = cytoscape({
+        //     // cytoscapeの基本設定
+        //     const cy = cytoscape({
 
-                container: $('#cy'),
+        //         container: $('#cy'),
                 
-                {% autoescape off %}
-                elements: {{ graph_data }},
-                {% endautoescape %}
+        //         {% autoescape off %}
+        //         elements: {{ graph_data }},
+        //         {% endautoescape %}
 
-                style: [
-                    {
-                        selector: 'node',
-                        style: {
-                            'background-color': '#666',
-                            'label': 'data(title)'
-                        }
-                    },
+        //         style: [
+        //             {
+        //                 selector: 'node',
+        //                 style: {
+        //                     'background-color': '#666',
+        //                     'label': 'data(title)'
+        //                 }
+        //             },
 
-                    {
-                        selector: 'edge',
-                        style: {
-                            'width': 3,
-                            'line-color': '#ccc',
-                            'target-arrow-color': '#ccc',
-                            'target-arrow-shape': 'triangle',
-                            'curve-style': 'bezier',
-                            'label': 'data(label)'
-                        }
-                    }
-                ],
+        //             {
+        //                 selector: 'edge',
+        //                 style: {
+        //                     'width': 3,
+        //                     'line-color': '#ccc',
+        //                     'target-arrow-color': '#ccc',
+        //                     'target-arrow-shape': 'triangle',
+        //                     'curve-style': 'bezier',
+        //                     'label': 'data(label)'
+        //                 }
+        //             }
+        //         ],
 
-                layout: {
-                    name: 'dagre',
-                    rows: 1
-                },
+        //         layout: {
+        //             name: 'dagre',
+        //             rows: 1
+        //         },
 
-                wheelSensitivity: 0.2,
+        //         wheelSensitivity: 0.2,
 
-            });
+        //     });
 
-            // ノードをクリックしたとき
-            cy.on('tap', 'node', function(evt){
+        //     // ノードをクリックしたとき
+        //     cy.on('tap', 'node', function(evt){
 
-                var node = evt.target;
+        //         var node = evt.target;
 
-                if(now_mode === modes["normal"]) {
+        //         if(now_mode === modes["normal"]) {
 
-                    // idの一致するノードを線形探索し、記事を表示する
-                    for(let i = 0; i < articles.length; i++) {
-                        if(node.id() === articles[i].uid) {
-                            $('#article-title').text(articles[i].title);
-                            $('#article-body').text(articles[i].body);
-                            break;
-                        }
-                    }
-                    $('#article-detail').show();
+        //             // idの一致するノードを線形探索し、記事を表示する
+        //             for(let i = 0; i < articles.length; i++) {
+        //                 if(node.id() === articles[i].uid) {
+        //                     $('#article-title').text(articles[i].title);
+        //                     $('#article-body').text(articles[i].body);
+        //                     break;
+        //                 }
+        //             }
+        //             $('#article-detail').show();
                     
-                    // ノードに色を付ける
-                    decolor_all_nodes();
-                    color_node(node, node_color);
-                }
-                else {  // 以下、途中までcreateモードとdeleteモードの共通処理
+        //             // ノードに色を付ける
+        //             decolor_all_nodes();
+        //             color_node(node, node_color);
+        //         }
+        //         else {  // 以下、途中までcreateモードとdeleteモードの共通処理
 
-                    // クリックされたノードが既にリスト内に存在するかチェック
-                    let is_node_in_list = false;
-                    let node_idx = null;
-                    for(let i = 0; i < clicked_node_list.length; i++) {
-                        if(node === clicked_node_list[i]) {
-                            is_node_in_list = true;
-                            node_idx = i;
-                            break;
-                        }
-                    }
+        //             // クリックされたノードが既にリスト内に存在するかチェック
+        //             let is_node_in_list = false;
+        //             let node_idx = null;
+        //             for(let i = 0; i < clicked_node_list.length; i++) {
+        //                 if(node === clicked_node_list[i]) {
+        //                     is_node_in_list = true;
+        //                     node_idx = i;
+        //                     break;
+        //                 }
+        //             }
 
-                    // クリックしたノードが色無しなら色を付け、色付きなら色を無くす処理
-                    if(is_node_in_list) {
-                        const del_node_list = clicked_node_list.splice(node_idx, 1);
+        //             // クリックしたノードが色無しなら色を付け、色付きなら色を無くす処理
+        //             if(is_node_in_list) {
+        //                 const del_node_list = clicked_node_list.splice(node_idx, 1);
                         
-                        for(let i = 0; i < del_node_list.length; i++) {
-                            del_node_list[i].removeStyle();
-                        }
-                    }
-                    else {
-                        color_node(node, node_color);
-                    }                 
+        //                 for(let i = 0; i < del_node_list.length; i++) {
+        //                     del_node_list[i].removeStyle();
+        //                 }
+        //             }
+        //             else {
+        //                 color_node(node, node_color);
+        //             }                 
                     
-                    if(now_mode === modes["create"]) {
-                        const ref_list = create_id_list();
-                        $('#references').text(ref_list);
-                    }
-                    else {  // deleteモードの時
-                        const del_list = create_id_list();
-                        $('#delnodes').text(del_list);
-                    }                    
-                }
+        //             if(now_mode === modes["create"]) {
+        //                 const ref_list = create_id_list();
+        //                 $('#references').text(ref_list);
+        //             }
+        //             else {  // deleteモードの時
+        //                 const del_list = create_id_list();
+        //                 $('#delnodes').text(del_list);
+        //             }                    
+        //         }
 
-                // フォームの二重送信防止
-                $('form').on('submit', function() {
-                    $('.submit-button').prop('disabled', true);
-                });
+        //         // フォームの二重送信防止
+        //         $('form').on('submit', function() {
+        //             $('.submit-button').prop('disabled', true);
+        //         });
                 
-            });
+        //     });
 
             
-            cy.on('tap', function(event){
+        //     cy.on('tap', function(event){
                 
-                var evtTarget = event.target;
+        //         var evtTarget = event.target;
                 
-                // 背景をクリックしたとき
-                if( evtTarget === cy ){
+        //         // 背景をクリックしたとき
+        //         if( evtTarget === cy ){
 
-                    if(now_mode === modes["normal"]) {
-                        $('#article-detail').hide();
-                        decolor_all_nodes();
-                    }
+        //             if(now_mode === modes["normal"]) {
+        //                 $('#article-detail').hide();
+        //                 decolor_all_nodes();
+        //             }
 
-                }
-            });          
+        //         }
+        //     });          
 
-        });
+        // });
 
         const show_create_page = () => {
             $('#article-detail').hide();
@@ -288,7 +288,13 @@
         <a href="#" class="btn btn-del" onclick="show_delete_page()">×</a>
 
     </div>
-    <script src="{% static 'track/cytoscape_settings.js' %}" async></script>
+    <script type="module">
+        import CytoscapeSettings from "{% static 'track/cytoscape_settings.js' %}";
+        
+        {% autoescape off %}
+        const cy = new CytoscapeSettings({{ graph_data }});
+        {% endautoescape %}
+    </script>
 </body>
 
 </html>
