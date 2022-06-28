@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
     <link rel="stylesheet" href="{% static 'track/style.css' %}">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.0/cytoscape.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.2/cytoscape.umd.js" integrity="sha512-f2pi4FT6LCwl93apc24uOUnAg8FtnkcSI1TLTQ96We8bzniiO8z7+S6qXBthmvJSFORTTjCmQL82MY7Jhi5FVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -28,206 +28,6 @@
             {% endfor %}
         ];
         {% endautoescape %}
-
-        // 状態の定義
-        const modes = {
-            normal: 1,
-            create: 2,  // 記事の新規作成画面が表示されている状態
-            delete: 3   // 記事の削除画面が表示されている状態
-        };
-
-        let now_mode = modes["normal"];  // 現在の画面状態を表す変数
-        const clicked_node_list = [];
-        const node_color = '#719ddc';
-
-        // ノードに色付けすると同時に、クリックされたノードとしてリストに保持する
-        const color_node = (node, color) => {
-            node.style('background-color', color);
-            clicked_node_list.push(node);
-        };
-
-        // 全てのノードの色を元に戻し、リストも空にする
-        const decolor_all_nodes = () => {
-            while(clicked_node_list.length !== 0) {
-                const node = clicked_node_list.pop();
-                node.removeStyle();
-            }
-        };
-
-        // ノードのリストからidのリストを生成する
-        const create_id_list = () => {
-            const id_list = [];
-            for(let i = 0; i < clicked_node_list.length; i++) {  // for in構文を使うとなぜか要素を取り出せず、node.id()でエラーが出る
-                const node = clicked_node_list[i]
-                id_list.push(node.id());
-            }
-            return id_list;
-        };
-
-        // $(function () {
-
-        //     // cytoscapeの基本設定
-        //     const cy = cytoscape({
-
-        //         container: $('#cy'),
-                
-        //         {% autoescape off %}
-        //         elements: {{ graph_data }},
-        //         {% endautoescape %}
-
-        //         style: [
-        //             {
-        //                 selector: 'node',
-        //                 style: {
-        //                     'background-color': '#666',
-        //                     'label': 'data(title)'
-        //                 }
-        //             },
-
-        //             {
-        //                 selector: 'edge',
-        //                 style: {
-        //                     'width': 3,
-        //                     'line-color': '#ccc',
-        //                     'target-arrow-color': '#ccc',
-        //                     'target-arrow-shape': 'triangle',
-        //                     'curve-style': 'bezier',
-        //                     'label': 'data(label)'
-        //                 }
-        //             }
-        //         ],
-
-        //         layout: {
-        //             name: 'dagre',
-        //             rows: 1
-        //         },
-
-        //         wheelSensitivity: 0.2,
-
-        //     });
-
-        //     // ノードをクリックしたとき
-        //     cy.on('tap', 'node', function(evt){
-
-        //         var node = evt.target;
-
-        //         if(now_mode === modes["normal"]) {
-
-        //             // idの一致するノードを線形探索し、記事を表示する
-        //             for(let i = 0; i < articles.length; i++) {
-        //                 if(node.id() === articles[i].uid) {
-        //                     $('#article-title').text(articles[i].title);
-        //                     $('#article-body').text(articles[i].body);
-        //                     break;
-        //                 }
-        //             }
-        //             $('#article-detail').show();
-                    
-        //             // ノードに色を付ける
-        //             decolor_all_nodes();
-        //             color_node(node, node_color);
-        //         }
-        //         else {  // 以下、途中までcreateモードとdeleteモードの共通処理
-
-        //             // クリックされたノードが既にリスト内に存在するかチェック
-        //             let is_node_in_list = false;
-        //             let node_idx = null;
-        //             for(let i = 0; i < clicked_node_list.length; i++) {
-        //                 if(node === clicked_node_list[i]) {
-        //                     is_node_in_list = true;
-        //                     node_idx = i;
-        //                     break;
-        //                 }
-        //             }
-
-        //             // クリックしたノードが色無しなら色を付け、色付きなら色を無くす処理
-        //             if(is_node_in_list) {
-        //                 const del_node_list = clicked_node_list.splice(node_idx, 1);
-                        
-        //                 for(let i = 0; i < del_node_list.length; i++) {
-        //                     del_node_list[i].removeStyle();
-        //                 }
-        //             }
-        //             else {
-        //                 color_node(node, node_color);
-        //             }                 
-                    
-        //             if(now_mode === modes["create"]) {
-        //                 const ref_list = create_id_list();
-        //                 $('#references').text(ref_list);
-        //             }
-        //             else {  // deleteモードの時
-        //                 const del_list = create_id_list();
-        //                 $('#delnodes').text(del_list);
-        //             }                    
-        //         }
-
-        //         // フォームの二重送信防止
-        //         $('form').on('submit', function() {
-        //             $('.submit-button').prop('disabled', true);
-        //         });
-                
-        //     });
-
-            
-        //     cy.on('tap', function(event){
-                
-        //         var evtTarget = event.target;
-                
-        //         // 背景をクリックしたとき
-        //         if( evtTarget === cy ){
-
-        //             if(now_mode === modes["normal"]) {
-        //                 $('#article-detail').hide();
-        //                 decolor_all_nodes();
-        //             }
-
-        //         }
-        //     });          
-
-        // });
-
-        const show_create_page = () => {
-            $('#article-detail').hide();
-            $('#article-delete').hide();
-
-            now_mode = modes["create"];
-            decolor_all_nodes();
-            $('#references').text("");
-
-            $('#article-create').show();
-        };
-
-        const hide_create_page = () => {
-
-            decolor_all_nodes();
-            $('#article-create').hide();
-
-            now_mode = modes["normal"];
-        };
-
-        const show_delete_page = () => {
-            $('#article-detail').hide();
-            $('#article-create').hide();
-
-            now_mode = modes["delete"];
-            decolor_all_nodes();
-            $('#delnodes').text("");
-
-            $('#article-delete').show();
-        };
-
-        const hide_delete_page = () => {
-            decolor_all_nodes();
-            $('#article-delete').hide();
-
-            now_mode = modes["normal"];
-        };
-
-        const hide_article_page = () => {
-            decolor_all_nodes();
-            $('#article-detail').hide();
-        };
 
     </script>
 
@@ -288,13 +88,12 @@
         <a href="#" class="btn btn-del" onclick="show_delete_page()">×</a>
 
     </div>
-    <script type="module">
-        import CytoscapeSettings from "{% static 'track/cytoscape_settings.js' %}";
-        
+    <script>
         {% autoescape off %}
-        const cy = new CytoscapeSettings({{ graph_data }});
+        const graph_data = {{ graph_data }};
         {% endautoescape %}
     </script>
+    <script src="{% static 'track/cytoscape_settings.js' %}"></script>
 </body>
 
 </html>
