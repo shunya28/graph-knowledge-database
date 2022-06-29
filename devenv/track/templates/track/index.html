@@ -77,8 +77,8 @@
             <form action="{% url 'track:delnode' %}" method="post">
                 {% csrf_token %}
                 <p>
-                    <label for="uid">削除するノードを選択してください。</label>
-                    <textarea name="uid" id="delnodes" cols="30" rows="10" required hidden></textarea>
+                    <label for="node-ids">削除するノードを選択してください。</label>
+                    <textarea name="node-ids" id="delnodes" cols="30" rows="10" required hidden></textarea>
                 </p>
                 <input class="submit-button" type="submit" value="選択した記事を削除する">
             </form>

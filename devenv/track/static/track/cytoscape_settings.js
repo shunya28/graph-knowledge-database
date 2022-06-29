@@ -73,10 +73,10 @@ cy.on('tap', 'node', function(evt) {
     if(now_mode === modes.normal) {
 
         // idの一致するノードを線形探索し、記事を表示する
-        for(let i = 0; i < articles.length; i++) {
-            if(node.id() === articles[i].uid) {
-                document.getElementById('article-title').textContent = articles[i].title;
-                document.getElementById('article-body').textContent = articles[i].body;
+        for(let i = 0; i < graph_data.length; i++) {
+            if(node.id() === graph_data[i].data.id) {
+                document.getElementById('article-title').textContent = graph_data[i].data.title;
+                document.getElementById('article-body').textContent = graph_data[i].data.body;
                 break;
             }
         }
