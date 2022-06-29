@@ -13,54 +13,6 @@ from django.views import View
 from neomodel.exceptions import DoesNotExist
 from neomodel import db, StructuredNode, StructuredRel
 
-# deprecated
-def index(request):
-    # return render(request, 'track/index.html')
-    # all_persons = Person.nodes.all()
-    articles = Article.nodes.all()
-
-    # https://stackoverflow.com/questions/67821341/retrieve-the-relationship-object-in-neomodel
-    relationships = []
-    for article in articles:
-        for article_ref in article.ref:
-            print(type(article_ref))
-            relationships.append(article.ref.relationship(article_ref))
-
-    # print(relationships)
-
-    # from neomodel import db, StructuredRel
-    # results, meta = db.cypher_query("match (n)-[r]->() return r")
-    # print(results)
-    # print(StructuredRel.inflate(results[0][0]).start_node())
-
-    # for article in articles:
-    #     print(article)
-
-    # test_rels = articles[0].ref.all_relationships(articles[0].ref)
-    # for article in articles:
-    #     for j in range(len(articles)):
-    #         print(type(article.nodes))
-    #         # tmp = article.all_relationships(articles[j])
-    #         # test_rels.append(tmp)
-
-    # print(test_rels)
-    
-    # for relationship in relationships:
-    #     print(relationship.name)
-    #     print(dir(relationship))
-        # print(relationship.id)
-        # print(relationship.start_node())
-
-    context = {
-        # 'nodes': all_persons,
-        'nodes': articles,
-        'edges': relationships,
-        # 'node_ids': [article.uid for article in articles],
-        # 'data': [article.get_param_for_neo4j() for article in articles],
-    }
-
-    return render(request, 'track/index.html', context)
-
 
 def addnode(request):
     try:
@@ -95,9 +47,6 @@ def delnode(request):
         pass
     else:
         db.cypher_query(f'MATCH (n) WHERE id(n) IN {id_list} DELETE n')
-        # for id in id_list:
-            # node_to_delete = Article.nodes.get(uid=uid)
-            # node_to_delete.delete()
 
     return HttpResponseRedirect(reverse('track:index'))
 
