@@ -1,3 +1,4 @@
+from platform import node
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -15,6 +16,7 @@ from neomodel import db, StructuredNode, StructuredRel
 
 
 def addnode(request):
+    # TODO: ここの例外処理要る？
     try:
         title = request.POST['title']
         body = request.POST['body']
@@ -25,15 +27,21 @@ def addnode(request):
         node_to_add = Article(title=title, body=body)
         node_to_add.save()
 
+        # FIXME: referencesが['']だとエラー吐く
         for ref_id in references:
             try:
-                node_to_connect = Article.nodes.get(uid=ref_id)
+                # node_to_connect = Article.nodes.get(id=ref_id)
+                node_to_connect = db.cypher_query(f'MATCH (n) WHERE id(n) = {ref_id} RETURN n')
+                # node_to_connect = Article.inflate(node_to_connect[0][0][0])
             except(DoesNotExist):
                 # node_to_add.ref = None
                 pass
             else:
-                node_to_add.ref.connect(node_to_connect,
-                                        {'uid_start': node_to_add.uid, 'uid_end': node_to_connect.uid})
+                pass
+                # print(type(Article.inflate(node_to_connect[0][0][0])))
+                # node_to_add.reference.connect(node_to_connect[0][0][0])  # これがうまくいかないのでcypherで良いかも
+                # node_to_add.ref.connect(node_to_connect,
+                #                         {'uid_start': node_to_add.uid, 'uid_end': node_to_connect.uid})
         # node_to_add.refresh()はいらない？
 
     return HttpResponseRedirect(reverse('track:index'))
@@ -51,7 +59,6 @@ def delnode(request):
     return HttpResponseRedirect(reverse('track:index'))
 
 
-# new experiment since 2022/6/21
 class Index(LoginRequiredMixin, View):
     def get(self, request):
 

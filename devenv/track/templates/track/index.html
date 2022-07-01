@@ -11,10 +11,11 @@
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.0/cytoscape.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.2/cytoscape.umd.js" integrity="sha512-f2pi4FT6LCwl93apc24uOUnAg8FtnkcSI1TLTQ96We8bzniiO8z7+S6qXBthmvJSFORTTjCmQL82MY7Jhi5FVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <script src="https://cdn.rawgit.com/cpettitt/dagre/v0.7.4/dist/dagre.min.js"></script>
     <script src="https://cdn.rawgit.com/cytoscape/cytoscape.js-dagre/1.5.0/cytoscape-dagre.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.17/marked.min.js" integrity="sha512-vSD33WvMJMZwnOWxigzY4MmmUnGqY4APr91CZ4h3UTJ29AmZ8vW3WOwKycGptx7ow1f2SDYKLchv/qKnYHWI+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.8/purify.min.js" integrity="sha512-M72KfQy4kPuLYC6CeTrN0eA17U1lXEMrr5qEJC/40CLdZGC3HpwPS0esQLqBHnxty2FIcuNdP9EqwSOCLEVJXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
         
@@ -50,25 +51,28 @@
         <div class="article-wrapper" id="article-create" style="display: none;">
             <a href="#" onclick="hide_create_page()">×</a>
             <h2>記事の新規作成</h2>
-            <form action="{% url 'track:addnode' %}" method="post">
-                {% csrf_token %}                
-                <p>
-                    <label for="add-title">タイトル</label>
-                    <br>
-                    <input type="text" name="title" id="add-title" required>
-                </p>
-                <p>
-                    <label for="add-body">本文</label>
-                    <br>
-                    <textarea id="add-body" name="body" cols="30" rows="10" required></textarea>
-                </p>
-                <p>
-                    <label for="references">参照した記事がある場合、そのノードをクリックして選択してください。</label>
-                    <br>
-                    <textarea name="references" id="references" cols="30" rows="10" hidden></textarea>
-                </p>
-                <input class="submit-button" type="submit" value="投稿する">
-            </form>
+            <div>
+                <form action="{% url 'track:addnode' %}" method="post">
+                    {% csrf_token %}                
+                    <p>
+                        <label for="add-title">タイトル</label>
+                        <br>
+                        <input type="text" name="title" id="add-title" required>
+                    </p>
+                    <p>
+                        <label for="add-body">本文</label>
+                        <br>
+                        <textarea id="add-body" name="body" cols="30" rows="10" required></textarea>
+                    </p>
+                    <p>
+                        <label for="references">参照した記事がある場合、そのノードをクリックして選択してください。</label>
+                        <br>
+                        <textarea name="references" id="references" cols="30" rows="10" hidden></textarea>
+                    </p>
+                    <input class="submit-button" type="submit" value="投稿する">
+                </form>    
+            </div>
+            <div id="create-preview"></div>
         </div>
         
         <div class="article-wrapper" id="article-delete" style="display: none;">
@@ -88,10 +92,21 @@
         <a href="#" class="btn btn-del" onclick="show_delete_page()">×</a>
 
     </div>
+    <!-- <div id="test-content"></div> -->
     <script>
         {% autoescape off %}
         const graph_data = {{ graph_data }};
         {% endautoescape %}
+
+        const text_to_markdown = (dirty_text) => {
+            const dirty_markdown = marked.parse(dirty_text);
+            const sanitized_html = DOMPurify.sanitize(dirty_markdown);
+            return sanitized_html;
+        };
+
+        document.getElementById('add-body').oninput = (e) => {
+            document.getElementById('create-preview').innerHTML = text_to_markdown(e.target.value);
+        };
     </script>
     <script src="{% static 'track/cytoscape_settings.js' %}"></script>
 </body>
