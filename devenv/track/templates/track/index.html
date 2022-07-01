@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
     <link rel="stylesheet" href="{% static 'track/style.css' %}">
 
+    <!-- for highlight.js -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
+
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.0/cytoscape.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.2/cytoscape.umd.js" integrity="sha512-f2pi4FT6LCwl93apc24uOUnAg8FtnkcSI1TLTQ96We8bzniiO8z7+S6qXBthmvJSFORTTjCmQL82MY7Jhi5FVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -16,7 +19,8 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.17/marked.min.js" integrity="sha512-vSD33WvMJMZwnOWxigzY4MmmUnGqY4APr91CZ4h3UTJ29AmZ8vW3WOwKycGptx7ow1f2SDYKLchv/qKnYHWI+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.8/purify.min.js" integrity="sha512-M72KfQy4kPuLYC6CeTrN0eA17U1lXEMrr5qEJC/40CLdZGC3HpwPS0esQLqBHnxty2FIcuNdP9EqwSOCLEVJXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js" integrity="sha512-yUUc0qWm2rhM7X0EFe82LNnv2moqArj5nro/w1bi05A09hRVeIZbN6jlMoyu0+4I/Bu4Ck/85JQIU82T82M28w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     <script>
         
         // viewから渡された変数の展開
@@ -43,13 +47,13 @@
         </div>
 
         <div class="article-wrapper" id="article-detail" style="display: none;">
-            <a href="#" onclick="hide_article_page()">×</a>
-            <h2 id="article-title"></h2>
+            <a href="#" id="close_btn" onclick="hide_article_page()">×</a>
+            <h1 id="article-title"></h1>
             <p id="article-body"></p>
         </div>
 
         <div class="article-wrapper" id="article-create" style="display: none;">
-            <a href="#" onclick="hide_create_page()">×</a>
+            <a href="#" id="close_btn" onclick="hide_create_page()">×</a>
             <h2>記事の新規作成</h2>
             <div>
                 <form action="{% url 'track:addnode' %}" method="post">
@@ -76,7 +80,7 @@
         </div>
         
         <div class="article-wrapper" id="article-delete" style="display: none;">
-            <a href="#" onclick="hide_delete_page()">×</a>
+            <a href="#" id="close_btn" onclick="hide_delete_page()">×</a>
             <h2>記事の削除</h2>
             <form action="{% url 'track:delnode' %}" method="post">
                 {% csrf_token %}
@@ -97,18 +101,9 @@
         {% autoescape off %}
         const graph_data = {{ graph_data }};
         {% endautoescape %}
-
-        const text_to_markdown = (dirty_text) => {
-            const dirty_markdown = marked.parse(dirty_text);
-            const sanitized_html = DOMPurify.sanitize(dirty_markdown);
-            return sanitized_html;
-        };
-
-        document.getElementById('add-body').oninput = (e) => {
-            document.getElementById('create-preview').innerHTML = text_to_markdown(e.target.value);
-        };
     </script>
-    <script src="{% static 'track/cytoscape_settings.js' %}"></script>
+    <script src="{% static 'track/markdown.js' %}"></script>
+    <script src="{% static 'track/cytoscape.js' %}"></script>
 </body>
 
 </html>

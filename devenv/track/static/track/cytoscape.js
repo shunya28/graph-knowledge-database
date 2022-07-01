@@ -76,7 +76,7 @@ cy.on('tap', 'node', function(evt) {
         for(let i = 0; i < graph_data.length; i++) {
             if(node.id() === graph_data[i].data.id) {
                 document.getElementById('article-title').textContent = graph_data[i].data.title;                 
-                document.getElementById('article-body').innerHTML = text_to_markdown(graph_data[i].data.body);
+                document.getElementById('article-body').innerHTML = markdown_to_sanitized_html(graph_data[i].data.body);
                 break;
             }
         }
