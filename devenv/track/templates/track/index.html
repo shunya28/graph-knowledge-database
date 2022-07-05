@@ -57,7 +57,7 @@
             <h2>記事の新規作成</h2>
             <div>
                 <form action="{% url 'track:addnode' %}" method="post">
-                    {% csrf_token %}                
+                    {% csrf_token %}      
                     <p>
                         <label for="add-title">タイトル</label>
                         <br>
