@@ -29,19 +29,28 @@ def addnode(request):
 
         # FIXME: referencesが['']だとエラー吐く
         for ref_id in references:
-            try:
-                # node_to_connect = Article.nodes.get(id=ref_id)
-                node_to_connect = db.cypher_query(f'MATCH (n) WHERE id(n) = {ref_id} RETURN n')
-                # node_to_connect = Article.inflate(node_to_connect[0][0][0])
-            except(DoesNotExist):
-                # node_to_add.ref = None
-                pass
-            else:
-                pass
-                # print(type(Article.inflate(node_to_connect[0][0][0])))
-                # node_to_add.reference.connect(node_to_connect[0][0][0])  # これがうまくいかないのでcypherで良いかも
-                # node_to_add.ref.connect(node_to_connect,
-                #                         {'uid_start': node_to_add.uid, 'uid_end': node_to_connect.uid})
+            if(ref_id == ''):
+                break
+            
+            node_to_connect = db.cypher_query(f'MATCH (n) WHERE id(n) = {ref_id} RETURN n')
+            node_to_connect = Article.inflate(node_to_connect[0][0][0])
+            print(node_to_connect)
+            node_to_add.reference.connect(node_to_connect)
+            
+
+            # try:
+            #     # node_to_connect = Article.nodes.get(id=ref_id)
+            #     node_to_connect = db.cypher_query(f'MATCH (n) WHERE id(n) = {ref_id} RETURN n')
+            #     # node_to_connect = Article.inflate(node_to_connect[0][0][0])
+            # except(DoesNotExist):
+            #     # node_to_add.ref = None
+            #     pass
+            # else:
+            #     pass
+            #     # print(type(Article.inflate(node_to_connect[0][0][0])))
+            #     # node_to_add.reference.connect(node_to_connect[0][0][0])  # これがうまくいかないのでcypherで良いかも
+            #     # node_to_add.ref.connect(node_to_connect,
+            #     #                         {'uid_start': node_to_add.uid, 'uid_end': node_to_connect.uid})
         # node_to_add.refresh()はいらない？
 
     return HttpResponseRedirect(reverse('track:index'))
@@ -54,7 +63,7 @@ def delnode(request):
     except(KeyError):
         pass
     else:
-        db.cypher_query(f'MATCH (n) WHERE id(n) IN {id_list} DELETE n')
+        db.cypher_query(f'MATCH (n) WHERE id(n) IN {id_list} DETACH DELETE n')
 
     return HttpResponseRedirect(reverse('track:index'))
 

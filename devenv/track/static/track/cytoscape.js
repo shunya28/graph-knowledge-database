@@ -48,7 +48,7 @@ const cy_style = [
             'target-arrow-color': '#ccc',
             'target-arrow-shape': 'triangle',
             'curve-style': 'bezier',
-            'label': 'data(label)'
+            // 'label': 'data(label)'
         }
     }
 ];

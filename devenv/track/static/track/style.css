@@ -2,6 +2,12 @@ a {
     text-decoration: none;
 }
 
+#article-detail {
+    overflow-x: visible;
+    overflow-y: scroll;
+    overflow-wrap: break-word;
+}
+
 .article-wrapper {
     width: 700px;
     height: 100%;
