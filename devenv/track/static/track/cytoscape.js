@@ -77,6 +77,7 @@ cy.on('tap', 'node', function(evt) {
             if(node.id() === graph_data[i].data.id) {
                 document.getElementById('article-title').textContent = graph_data[i].data.title;
                 document.getElementById('author').textContent = graph_data[i].data.author;
+                document.getElementById('creation-date').textContent = graph_data[i].data.creation_date;
                 document.getElementById('article-body').innerHTML = markdown_to_sanitized_html(graph_data[i].data.body);
                 document.querySelectorAll('pre, code').forEach((el) => {
                     hljs.highlightElement(el);

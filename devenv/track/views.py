@@ -1,4 +1,3 @@
-from platform import node
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
@@ -13,6 +12,7 @@ from .models import (
 from django.views import View
 from neomodel.exceptions import DoesNotExist
 from neomodel import db, StructuredNode, StructuredRel
+import pytz
 
 
 def addnode(request):
@@ -118,13 +118,17 @@ class Index(LoginRequiredMixin, View):
     # TODO: 一般化したい
     def convert_node_to_dictlist(self, nodes):
 
+        jst = pytz.timezone('Asia/Tokyo')
+
         dict_list = []
 
         for node in nodes:
+            print(node.creation_date.tzinfo)
             prop_dict = {
                 'data': {
                     'id': node.id,
-                    'creation_date': node.creation_date.strftime('%Y-%m-%d %H:%M:%S'),
+                    'creation_date': node.creation_date.astimezone(jst).strftime('%Y-%m-%d %H:%M:%S'),
+                    # 'creation_date': node.creation_date,
                     'title': node.title,
                     'body': node.body
                 }

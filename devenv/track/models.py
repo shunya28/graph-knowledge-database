@@ -6,6 +6,7 @@ from neomodel import (
     UniqueIdProperty,
     IntegerProperty,
     DateTimeProperty,
+    DateTimeFormatProperty,
     RelationshipTo,
     StructuredRel,
 )
@@ -23,6 +24,7 @@ class Sequence(StructuredRel):
 
 class Article(StructuredNode):
     creation_date = DateTimeProperty(default_now=True)
+    # creation_date = DateTimeFormatProperty(default_now=True, format='%Y-%m-%d %H:%M:%S')
     # edit_date = DateTimeProperty()
     author = StringProperty()
     title = StringProperty(required=True)
