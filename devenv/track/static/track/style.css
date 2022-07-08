@@ -3,7 +3,7 @@ a {
 }
 
 .article-wrapper {
-    width: 700px;
+    width: 50%;
     height: 100%;
     background-color: #e5eaee;
     padding: 20px 40px;
@@ -33,6 +33,17 @@ a {
 .article-wrapper p,
 .article-wrapper label {
     color: #444;
+}
+
+.article-wrapper input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.article-wrapper textarea {
+    width: 100%;
+    height: 500px;
+    margin-bottom: 10px;
 }
 
 /* https://jajaaan.co.jp/css/button/#zheng_yuanbotan */
@@ -84,6 +95,10 @@ body {
 
 .errorlist {
 
+}
+
+.form-area {
+    margin-bottom: 20px;
 }
 
 .form-control {

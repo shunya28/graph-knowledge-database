@@ -57,7 +57,7 @@
         <div class="article-wrapper" id="article-create" style="display: none;">
             <a href="#" id="close_btn" onclick="hide_create_page()">×</a>
             <h2>記事の新規作成</h2>
-            <div>
+            <div class="form-area">
                 <form action="{% url 'track:addnode' %}" method="post">
                     {% csrf_token %}      
                     <p>
@@ -75,9 +75,11 @@
                         <br>
                         <textarea name="references" id="references" cols="30" rows="10" hidden></textarea>
                     </p>
-                    <input class="submit-button" type="submit" value="投稿する">
+                    <button class="submit-button" type="submit">投稿する</button>
+                    <!-- <input class="submit-button" type="submit" value="投稿する"> -->
                 </form>    
             </div>
+            <h2>プレビュー</h2>
             <div id="create-preview"></div>
         </div>
         
@@ -90,7 +92,8 @@
                     <label for="node-ids">削除するノードを選択してください。</label>
                     <textarea name="node-ids" id="delnodes" cols="30" rows="10" required hidden></textarea>
                 </p>
-                <input class="submit-button" type="submit" value="選択した記事を削除する">
+                <!-- <input class="submit-button" type="submit" value="選択した記事を削除する"> -->
+                <button class="submit-button" type="submit">選択した記事を削除する</button>
             </form>
         </div>
 

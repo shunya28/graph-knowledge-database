@@ -1,5 +1,6 @@
 marked.setOptions({
     breaks: true,
+    gfm: true,
     langPrefix: '',
     headerIds: false,
 });
