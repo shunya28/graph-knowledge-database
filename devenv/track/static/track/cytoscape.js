@@ -75,7 +75,8 @@ cy.on('tap', 'node', function(evt) {
         // idの一致するノードを線形探索し、記事を表示する
         for(let i = 0; i < graph_data.length; i++) {
             if(node.id() === graph_data[i].data.id) {
-                document.getElementById('article-title').textContent = graph_data[i].data.title;                 
+                document.getElementById('article-title').textContent = graph_data[i].data.title;
+                document.getElementById('author').textContent = graph_data[i].data.author;
                 document.getElementById('article-body').innerHTML = markdown_to_sanitized_html(graph_data[i].data.body);
                 document.querySelectorAll('pre, code').forEach((el) => {
                     hljs.highlightElement(el);

@@ -16,10 +16,10 @@
     <div class="main-wrapper">
         <div class="login-wrapper">
             <h2>ログイン</h2>
-            <form action="" method="POST">
+            <form action="{% url 'accounts:login' %}" method="POST">
                 {% csrf_token %}
                 {% for field in form %}
-                    {{ field }}
+                    {{ field }}<br>
                 {% endfor %}
                 <div>
                     {% for error in form.non_field_errors %}

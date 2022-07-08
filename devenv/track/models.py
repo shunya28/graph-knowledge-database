@@ -1,3 +1,4 @@
+from tokenize import String
 from django.db import models
 from neomodel import (
     StructuredNode,
@@ -23,6 +24,7 @@ class Sequence(StructuredRel):
 class Article(StructuredNode):
     creation_date = DateTimeProperty(default_now=True)
     # edit_date = DateTimeProperty()
+    author = StringProperty()
     title = StringProperty(required=True)
     body = StringProperty(required=True)
 

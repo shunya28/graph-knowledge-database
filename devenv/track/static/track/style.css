@@ -82,6 +82,14 @@ body {
     height: 100%;
 }
 
+.errorlist {
+
+}
+
+.form-control {
+    margin-bottom: 20px;
+}
+
 .graph-wrapper {
     height: 100%;
 }
@@ -122,12 +130,28 @@ header {
 }
 
 .login-wrapper {
-    width: 200px;
+    width: 80%;
+    padding-top: 100px;
     margin: 0 auto;
+    text-align: center;
 }
 
 .login-wrapper h2 {
-    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-wrapper form {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.login-wrapper p {
+    margin-bottom: 20px;
+}
+
+.login-wrapper table {
+    width: 700px;
+    margin: 0 auto 20px auto;
 }
 
 .main-wrapper {

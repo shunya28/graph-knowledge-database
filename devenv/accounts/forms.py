@@ -7,9 +7,13 @@ class UserCreateForm(UserCreationForm):
         super().__init__(*args, **kwargs)
 
         # htmlの表示を変更可能にします
-        self.fields['username'].widget.attrs['class'] = 'form-control'
-        self.fields['password1'].widget.attrs['class'] = 'form-control'
-        self.fields['password2'].widget.attrs['class'] = 'form-control'
+        # self.fields['username'].widget.attrs['class'] = 'form-control'
+        # self.fields['password1'].widget.attrs['class'] = 'form-control'
+        # self.fields['password2'].widget.attrs['class'] = 'form-control'
+
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'signup-form'
+            field.widget.attrs['placeholder'] = field.label
 
     class Meta:
         model = User

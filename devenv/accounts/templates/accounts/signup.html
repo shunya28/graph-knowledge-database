@@ -18,15 +18,23 @@
             <h2>会員登録</h2>
             <form method="POST" action="{% url 'accounts:signup' %}">
                 {% csrf_token %}
-                <label>ユーザーID</label>
-                {{ form.username }}
-                {{ form.username.errors }}
-                <label>パスワード</label>
-                {{ form.password1 }}
-                {{ form.password1.errors }}
-                <label>パスワード(確認)</label>
-                {{ form.password2 }}
-                {{ form.password2.errors }}
+                <table>
+                    <tr>
+                        <td>ユーザー名</td>
+                        <td>{{ form.username }}</td>
+                        <td>{{ form.username.errors }}</td>
+                    </tr>
+                    <tr>
+                        <td>パスワード</td>
+                        <td>{{ form.password1 }}</td>
+                        <td>{{ form.password1.errors }}</td>
+                    </tr>
+                    <tr>
+                        <td>パスワード(確認用)</td>
+                        <td>{{ form.password2 }}</td>
+                        <td>{{ form.password2.errors }}</td>
+                    </tr>
+                </table>
                 <button type = "submit">登録</button>
               </form>
         </div>
