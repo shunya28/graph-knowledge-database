@@ -21,10 +21,11 @@ def addnode(request):
         title = request.POST['title']
         body = request.POST['body']
         references = request.POST['references'].split(',')
+        author = request.user
     except(KeyError):
         pass
     else:
-        node_to_add = Article(title=title, body=body)
+        node_to_add = Article(title=title, body=body, author=author)
         node_to_add.save()
 
         # FIXME: referencesが['']だとエラー吐く
@@ -127,6 +128,7 @@ class Index(LoginRequiredMixin, View):
             prop_dict = {
                 'data': {
                     'id': node.id,
+                    'author': node.author,
                     'creation_date': node.creation_date.astimezone(jst).strftime('%Y-%m-%d %H:%M:%S'),
                     # 'creation_date': node.creation_date,
                     'title': node.title,
