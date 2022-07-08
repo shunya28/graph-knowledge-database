@@ -11,9 +11,10 @@ const markdown_to_sanitized_html = (dirty_text) => {
     return sanitized_html;
 };
 
+// 新規作成ページでのコードブロックのハイライト機能
 document.getElementById('add-body').oninput = (e) => {
     document.getElementById('create-preview').innerHTML = markdown_to_sanitized_html(e.target.value);
-    document.querySelectorAll('pre code').forEach((el) => {
+    document.querySelectorAll('pre, code').forEach((el) => {
         hljs.highlightElement(el);
     });
 };
