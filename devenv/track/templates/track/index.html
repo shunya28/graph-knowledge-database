@@ -67,21 +67,21 @@
         </div>
         
         <div class="article-wrapper" id="article-delete" style="display: none;">
-            <a href="#" id="close_btn" onclick="hide_delete_page()">×</a>
+            <!-- <a href="#" id="close_btn" onclick="hide_delete_page()">×</a>
             <h2>記事の削除</h2>
             <form action="{% url 'track:delnode' %}" method="post">
                 {% csrf_token %}
                 <p>
                     <label for="node-ids">削除するノードを選択してください。</label>
                     <textarea name="node-ids" id="delnodes" cols="30" rows="10" required hidden></textarea>
-                </p>
+                </p> -->
                 <!-- <input class="submit-button" type="submit" value="選択した記事を削除する"> -->
-                <button class="submit-button" type="submit">選択した記事を削除する</button>
-            </form>
+                <!-- <button class="submit-button" type="submit">選択した記事を削除する</button>
+            </form> -->
         </div>
 
         <a href="#" class="btn btn-new" onclick="show_create_page()">+</a>
-        <a href="#" class="btn btn-del" onclick="show_delete_page()">×</a>
+        <!-- <a href="#" class="btn btn-del" onclick="show_delete_page()">×</a> -->
 
     </div>
     <script>
