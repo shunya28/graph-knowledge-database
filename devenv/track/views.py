@@ -35,7 +35,7 @@ def addnode(request):
             
             node_to_connect = db.cypher_query(f'MATCH (n) WHERE id(n) = {ref_id} RETURN n')
             node_to_connect = Article.inflate(node_to_connect[0][0][0])
-            print(node_to_connect)
+            # print(node_to_connect)
             node_to_add.reference.connect(node_to_connect)
             
 
@@ -124,7 +124,6 @@ class Index(LoginRequiredMixin, View):
         dict_list = []
 
         for node in nodes:
-            print(node.creation_date.tzinfo)
             prop_dict = {
                 'data': {
                     'id': node.id,
@@ -154,3 +153,12 @@ class Index(LoginRequiredMixin, View):
             dict_list.append(prop_dict)
 
         return dict_list
+
+
+class Mypage(LoginRequiredMixin, View):
+    def get(self, request):
+        my_articles = db.cypher_query(f'MATCH (n {{author: "{request.user}"}}) RETURN n ORDER BY n.creation_date DESC')
+        my_articles = [Article.inflate(node[0]) for node in my_articles[0]]
+
+        context = {'articles': my_articles}
+        return render(request, 'track/mypage.html', context)

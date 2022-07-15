@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.Index.as_view(), name='index'),
     path('addnode/', views.addnode, name='addnode'),
     path('delnode/', views.delnode, name='delnode'),
+    path('mypage/', views.Mypage.as_view(), name='mypage'),
 ]

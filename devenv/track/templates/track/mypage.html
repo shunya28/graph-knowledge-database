@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset='utf-8'>
+    <title>マイページ｜Track</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+    <link rel="stylesheet" href="{% static 'track/style.css' %}">
+
+</head>
+<body>
+    {% include "track/header.html" %}
+    <div>
+        <section>
+            <h1>アカウント情報</h1>
+        </section>
+        <section>
+            <h1>投稿した記事</h1>
+            {% for article in articles %}
+                <article>
+                    {{ article.title }}
+                </article>
+            {% endfor %}
+        </section>
+    </div>
+</body>
+</html>

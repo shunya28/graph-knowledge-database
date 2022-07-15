@@ -10,7 +10,7 @@
                 <a href="{% url 'accounts:logout' %}">ログアウト</a>
             </div>
             <div class="header-right">
-                <a href="#">{{ user.get_username }}</a>
+                <a href="{% url 'track:mypage' %}">{{ user.get_username }}</a>
             </div>
         {% endif %}
         {% if not user.is_authenticated %}
