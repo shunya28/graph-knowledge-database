@@ -32,7 +32,17 @@
         </div>
 
         <div class="article-wrapper" id="article-detail" style="display: none;">
-            <a href="#" id="close_btn" onclick="hide_article_page()">×</a>
+            <div class="btn-column" id="btn-for-detail">
+                <!-- <div class="btn-left">
+                    <a href="#" id="btn-edit" class="btn-page" style="display: none;"><i class="fa-solid fa-pen"></i></a>
+                </div>
+                <div class="btn-left">
+                    <a href="#" id="btn-del"class="btn-page" style="display: none;"><i class="fa-solid fa-trash"></i></a>
+                </div> -->
+                <div class="btn-right">
+                    <a href="#" class="btn-page" onclick="hide_article_page()"><i class="fa-solid fa-xmark"></i></a>
+                </div>
+            </div>
             <h1 id="article-title"></h1>
             <p id="author"></p>
             <p id="creation-date"></p>
@@ -40,7 +50,11 @@
         </div>
 
         <div class="article-wrapper" id="article-create" style="display: none;">
-            <a href="#" id="close_btn" onclick="hide_create_page()">×</a>
+            <div class="btn-column">
+                <div class="btn-right">
+                    <a href="#" class="btn-page" onclick="hide_create_page()"><i class="fa-solid fa-xmark"></i></a>
+                </div>
+            </div>
             <h2>記事の新規作成</h2>
             <div class="form-area">
                 <form action="{% url 'track:addnode' %}" method="post">
@@ -82,13 +96,14 @@
             </form> -->
         </div>
 
-        <a href="#" class="btn btn-new" onclick="show_create_page()">+</a>
+        <a href="#" class="btn btn-new" onclick="show_create_page()"><i class="fa-solid fa-plus"></i></a>
         <!-- <a href="#" class="btn btn-del" onclick="show_delete_page()">×</a> -->
 
     </div>
     <script>
         {% autoescape off %}
         const graph_data = {{ graph_data }};
+        const current_user = "{{ user.get_username }}";
         {% endautoescape %}
     </script>
     <script src="{% static 'track/markdown.js' %}"></script>
