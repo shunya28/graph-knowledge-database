@@ -54,8 +54,10 @@ const cy_style = [
 ];
 
 const cy_layout = {
-    name: 'dagre',
-    rows: 1,
+    name: 'cola',
+    infinite: true,
+    fit: false,
+    padding: 100,
 };
 
 const cy = cytoscape({
