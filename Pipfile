@@ -9,6 +9,7 @@ django-environ = "*"
 django-neomodel = "*"
 dj-database-url = "*"
 psycopg2 = "*"
+fontawesomefree = "*"
 
 [dev-packages]
 

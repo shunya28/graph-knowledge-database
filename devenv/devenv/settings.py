@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_neomodel',
     'track.apps.TrackConfig',
     'accounts.apps.AccountsConfig',
+    'fontawesomefree',
 ]
 
 MIDDLEWARE = [

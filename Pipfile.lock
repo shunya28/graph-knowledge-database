@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0c7785fad9573fc00915e57eff9b550ee86bfac33fe91c467079d30153ad5ce9"
+            "sha256": "8e9589aff3c4aac0a7ede0b61f8a230f9b6ccbd9c41ab35a8b9492a6ae2a18df"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -34,11 +34,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:502ae42b6ab1b612c933fb50d5ff850facf858a4c212f76946ecd8ea5b3bf2d9",
-                "sha256:f7431a5de7277966f3785557c3928433347d998c1e6459324501378a291e5aab"
+                "sha256:a67a793ff6827fd373555537dca0da293a63a316fe34cb7f367f898ccca3c3ae",
+                "sha256:ca54ebedfcbc60d191391efbf02ba68fb52165b8bf6ccd6fe71f098cac1fe59e"
             ],
             "index": "pypi",
-            "version": "==4.0.5"
+            "version": "==4.0.6"
         },
         "django-environ": {
             "hashes": [
@@ -55,6 +55,13 @@
             ],
             "index": "pypi",
             "version": "==0.0.7"
+        },
+        "fontawesomefree": {
+            "hashes": [
+                "sha256:b077739369c013e8c8cf5edd59cb7fca3a5b16803d632cd466a62fd2e28937cb"
+            ],
+            "index": "pypi",
+            "version": "==6.1.1"
         },
         "neo4j-driver": {
             "hashes": [
