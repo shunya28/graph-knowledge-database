@@ -86,24 +86,34 @@ cy.on('tap', 'node', function(evt) {
                 });
 
                 // 今のユーザがこの記事の著者なら、記事の編集ボタンと削除ボタンを表示
-                const txt_closebtn = `
-                    <div class="btn-right">
-                        <a href="#" class="btn-page" onclick="hide_article_page()"><i class="fa-solid fa-xmark"></i></a>
-                    </div>
-                `;
-                const txt_edit_permitted = `
-                    <div class="btn-left">
-                        <a href="#" class="btn-page"><i class="fa-solid fa-pen"></i></a>
-                    </div>
-                    <div class="btn-left">
-                        <a href="#" class="btn-page"><i class="fa-solid fa-trash"></i></a>
-                    </div>
-                `;               
+                // const txt_closebtn = `
+                //     <div class="btn-right">
+                //         <a href="#" class="btn-page" onclick="hide_article_page()"><i class="fa-solid fa-xmark"></i></a>
+                //     </div>
+                // `;
+                // const txt_edit_permitted = `
+                //     <div class="btn-left">
+                //         <a href="#" class="btn-page"><i class="fa-solid fa-pen"></i></a>
+                //     </div>
+                //     <div class="btn-left">
+                //         <a href="#" class="btn-page" id="btn-del"><i class="fa-solid fa-trash"></i></a>
+                //     </div>
+                // `;               
 
-                if(author === current_user) {
-                    document.getElementById('btn-for-detail').innerHTML = txt_closebtn + txt_edit_permitted;
+                // if(author === current_user) {
+                //     document.getElementById('btn-for-detail').innerHTML = txt_closebtn + txt_edit_permitted;
+                // } else {
+                //     document.getElementById('btn-for-detail').innerHTML = txt_closebtn;
+                // }
+
+                const btnEdit = document.getElementById('btn-edit');
+                const btnDel = document.getElementById('btn-del');
+                if(author == current_user) {
+                    btnEdit.classList.add('active');
+                    btnDel.classList.add('active');
                 } else {
-                    document.getElementById('btn-for-detail').innerHTML = txt_closebtn;
+                    btnEdit.classList.remove('active');
+                    btnDel.classList.remove('active');
                 }
 
                 break;

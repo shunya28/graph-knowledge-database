@@ -13,14 +13,22 @@
     <!-- for highlight.js -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/default.min.css">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.2/cytoscape.umd.js" integrity="sha512-f2pi4FT6LCwl93apc24uOUnAg8FtnkcSI1TLTQ96We8bzniiO8z7+S6qXBthmvJSFORTTjCmQL82MY7Jhi5FVA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.21.2/cytoscape.umd.js"
+        integrity="sha512-f2pi4FT6LCwl93apc24uOUnAg8FtnkcSI1TLTQ96We8bzniiO8z7+S6qXBthmvJSFORTTjCmQL82MY7Jhi5FVA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="http://marvl.infotech.monash.edu/webcola/cola.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cytoscape-cola@2.5.1/cytoscape-cola.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.17/marked.min.js" integrity="sha512-vSD33WvMJMZwnOWxigzY4MmmUnGqY4APr91CZ4h3UTJ29AmZ8vW3WOwKycGptx7ow1f2SDYKLchv/qKnYHWI+w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.8/purify.min.js" integrity="sha512-M72KfQy4kPuLYC6CeTrN0eA17U1lXEMrr5qEJC/40CLdZGC3HpwPS0esQLqBHnxty2FIcuNdP9EqwSOCLEVJXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js" integrity="sha512-yUUc0qWm2rhM7X0EFe82LNnv2moqArj5nro/w1bi05A09hRVeIZbN6jlMoyu0+4I/Bu4Ck/85JQIU82T82M28w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.17/marked.min.js"
+        integrity="sha512-vSD33WvMJMZwnOWxigzY4MmmUnGqY4APr91CZ4h3UTJ29AmZ8vW3WOwKycGptx7ow1f2SDYKLchv/qKnYHWI+w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.8/purify.min.js"
+        integrity="sha512-M72KfQy4kPuLYC6CeTrN0eA17U1lXEMrr5qEJC/40CLdZGC3HpwPS0esQLqBHnxty2FIcuNdP9EqwSOCLEVJXQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"
+        integrity="sha512-yUUc0qWm2rhM7X0EFe82LNnv2moqArj5nro/w1bi05A09hRVeIZbN6jlMoyu0+4I/Bu4Ck/85JQIU82T82M28w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </head>
 
 <body>
@@ -33,12 +41,12 @@
 
         <div class="article-wrapper" id="article-detail" style="display: none;">
             <div class="btn-column" id="btn-for-detail">
-                <!-- <div class="btn-left">
-                    <a href="#" id="btn-edit" class="btn-page" style="display: none;"><i class="fa-solid fa-pen"></i></a>
+                <div class="btn-left">
+                    <a href="#" id="btn-edit" class="btn-page"><i class="fa-solid fa-pen"></i></a>
                 </div>
                 <div class="btn-left">
-                    <a href="#" id="btn-del"class="btn-page" style="display: none;"><i class="fa-solid fa-trash"></i></a>
-                </div> -->
+                    <a href="#" id="btn-del"class="btn-page"><i class="fa-solid fa-trash"></i></a>
+                </div>
                 <div class="btn-right">
                     <a href="#" class="btn-page" onclick="hide_article_page()"><i class="fa-solid fa-xmark"></i></a>
                 </div>
@@ -47,6 +55,14 @@
             <p id="author"></p>
             <p id="creation-date"></p>
             <p id="article-body"></p>
+        </div>
+
+        <div class="overlay"></div>
+        <div class="modal">
+            <div class="close"><i class="fa-solid fa-xmark"></i></div>
+            <h2>記事の削除</h2>
+            <p>一度削除した記事は元に戻せません。本当に削除しますか？</p>
+            <button class="submit-button" type="submit">削除する</button>
         </div>
 
         <div class="article-wrapper" id="article-create" style="display: none;">
@@ -58,7 +74,7 @@
             <h2>記事の新規作成</h2>
             <div class="form-area">
                 <form action="{% url 'track:addnode' %}" method="post">
-                    {% csrf_token %}      
+                    {% csrf_token %}
                     <p>
                         <label for="add-title">タイトル</label>
                         <br>
@@ -81,7 +97,7 @@
             <h2>プレビュー</h2>
             <div id="create-preview"></div>
         </div>
-        
+
         <div class="article-wrapper" id="article-delete" style="display: none;">
             <!-- <a href="#" id="close_btn" onclick="hide_delete_page()">×</a>
             <h2>記事の削除</h2>
@@ -91,8 +107,8 @@
                     <label for="node-ids">削除するノードを選択してください。</label>
                     <textarea name="node-ids" id="delnodes" cols="30" rows="10" required hidden></textarea>
                 </p> -->
-                <!-- <input class="submit-button" type="submit" value="選択した記事を削除する"> -->
-                <!-- <button class="submit-button" type="submit">選択した記事を削除する</button>
+            <!-- <input class="submit-button" type="submit" value="選択した記事を削除する"> -->
+            <!-- <button class="submit-button" type="submit">選択した記事を削除する</button>
             </form> -->
         </div>
 
@@ -105,6 +121,34 @@
         const graph_data = {{ graph_data }};
         const current_user = "{{ user.get_username }}";
         {% endautoescape %}
+
+        // https://orange-log.com/javascript-modal/
+        // ボタン、モダル、モダルの閉じるボタン、オーバーレイを変数に格納
+        const btn = document.getElementById('btn-del');
+        const modal = document.querySelector('.modal');
+        const closeBtn = document.querySelector('.close');
+        const overlay = document.querySelector('.overlay');
+
+        // ボタンをクリックしたら、モダルとオーバーレイに.activeを付ける
+        btn.addEventListener('click', function (e) {
+            // aタグのデフォルトの機能を停止する
+            e.preventDefault();
+            // モーダルとオーバーレイにactiveクラスを付与する
+            modal.classList.add('active');
+            overlay.classList.add('active');
+        });
+
+        // モダルの閉じるボタンをクリックしたら、モダルとオーバーレイのactiveクラスを外す
+        closeBtn.addEventListener('click', function () {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+
+        // オーバーレイをクリックしたら、モダルとオーバーレイのactiveクラスを外す
+        overlay.addEventListener('click', function () {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+        });
     </script>
     <script src="{% static 'track/markdown.js' %}"></script>
     <script src="{% static 'track/cytoscape.js' %}"></script>
