@@ -223,7 +223,7 @@ const hide_article_page = () => {
     document.getElementById('article-detail').style.display = 'none';
 };
 
-const set_article_id = () => {
+document.getElementById('del-node-form').addEventListener('submit', function () {
     document.getElementById('del-id').value = clicked_node_list[0].id();
     document.getElementById('user').value = current_user;
-};
+});

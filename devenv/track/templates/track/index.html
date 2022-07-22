@@ -45,7 +45,7 @@
                     <a href="#" id="btn-edit" class="btn-page"><i class="fa-solid fa-pen"></i></a>
                 </div>
                 <div class="btn-left">
-                    <a href="#" id="btn-del" class="btn-page" onclick="set_article_id()"><i class="fa-solid fa-trash"></i></a>
+                    <a href="#" id="btn-del" class="btn-page"><i class="fa-solid fa-trash"></i></a>
                 </div>
                 <div class="btn-right">
                     <a href="#" class="btn-page" onclick="hide_article_page()"><i class="fa-solid fa-xmark"></i></a>
@@ -59,7 +59,7 @@
 
         <div class="overlay"></div>
         <div class="modal">
-            <form action="{% url 'track:delnode' %}" method="post">
+            <form action="{% url 'track:delnode' %}" method="post" id="del-node-form">
                 {% csrf_token %}
                 <div class="close"><i class="fa-solid fa-xmark"></i></div>
                 <h2>記事の削除</h2>
