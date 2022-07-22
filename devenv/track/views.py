@@ -59,12 +59,27 @@ def addnode(request):
 
 def delnode(request):
     try:
-        id_list = request.POST['node-ids'].split(',')
-        id_list = [int(id) for id in id_list]
+        id = request.POST['node-id']
+        user = request.POST['user']
+
+        # FIXME: 削除実行時に選択されたノードを識別する際、
+        # index.htmlでtype="hidden"のinput要素にノードのIDを格納することでview.pyでそのidを受け取れるようにしているが、
+        # そこのIDを適当に書き換えて、
+        # デベロッパーツールでゴミ箱のマークを無理やり表示させ（classにactiveを追記する）、
+        # それを押して出てきたポップアップで削除するボタンを押すと、
+        # 書き換えたIDの記事を削除できてしまう。
+        # 問題は、他人の書いた記事を削除できてしまうことなので、
+        # 一旦それを回避するために、script内のcurrent_userの変数に格納されたuser名と
+        # 現在ログイン中のuser名が一致しているかを以下のコードで確かめているが、
+        # 根本的な解決にはなっていない。
+        # 一応確認した限りでは、script内のcurrent_userをデベロッパーツールで書き換えても
+        # ユーザ誤認は起きなかったけど、さらに検証する必要がありそう。
+        if user is not request.user:
+            return HttpResponseRedirect(reverse('track:index'))
     except(KeyError):
         pass
     else:
-        db.cypher_query(f'MATCH (n) WHERE id(n) IN {id_list} DETACH DELETE n')
+        db.cypher_query(f'MATCH (n) WHERE id(n) = {id} DETACH DELETE n')
 
     return HttpResponseRedirect(reverse('track:index'))
 

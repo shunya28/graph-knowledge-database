@@ -124,7 +124,6 @@ cy.on('tap', 'node', function(evt) {
         // ノードに色を付ける
         decolor_all_nodes();
         color_node(node, node_color);
-        
         return;
     }
     
@@ -222,4 +221,9 @@ const hide_delete_page = () => {
 const hide_article_page = () => {
     decolor_all_nodes();
     document.getElementById('article-detail').style.display = 'none';
+};
+
+const set_article_id = () => {
+    document.getElementById('del-id').value = clicked_node_list[0].id();
+    document.getElementById('user').value = current_user;
 };
