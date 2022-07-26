@@ -1,0 +1,50 @@
+.body .body__overlay--active, .body .body__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+.body .body__modal-close, .body .body__modal-delete-article--active, .body .body__modal-delete-article {
+  max-width: 500px;
+  width: 86%;
+  padding: 15px 20px;
+  background: #fff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+.body__overlay--active {
+  opacity: 1;
+  visibility: visible;
+}
+.body__modal-delete-article--active {
+  opacity: 1;
+  visibility: visible;
+}
+.body__modal-delete-article h2 {
+  font-size: 18px;
+  font-weight: normal;
+  margin-bottom: 10px;
+}
+.body__modal-delete-article p {
+  font-size: 13px;
+}
+.body__modal-close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 20px;
+}
+.body__graph-view {
+  height: 100%;
+}
