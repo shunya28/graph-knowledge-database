@@ -23,7 +23,7 @@
         transition: .3s;
     }
 
-    %__modal-delete-article {
+    %__modal {
         // https://orange-log.com/javascript-modal/ 
 
         max-width: 500px;
@@ -57,28 +57,28 @@
     }
 
     &__modal-delete-article {
-        @extend %__modal-delete-article;
+        @extend %__modal;
 
         &--active {
-            @extend %__modal-delete-article;
+            @extend %__modal;
             opacity: 1;
             visibility: visible;
         }
 
-        h2 {
-            font-size: 18px;
-            font-weight: normal;
-            margin-bottom: 10px;
-        }
+        // h2 {
+        //     font-size: 18px;
+        //     font-weight: normal;
+        //     margin-bottom: 10px;
+        // }
 
-        p {
-            font-size: 13px;
-        }
+        // p {
+        //     font-size: 13px;
+        // }
     }
 
     // モーダルウィンドウ内の閉じるボタン 
     &__modal-close {
-        @extend %__modal-delete-article;
+        @extend %__modal;
 
         position: absolute;
         top: 10px;

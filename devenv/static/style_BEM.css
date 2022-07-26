@@ -30,14 +30,6 @@
   opacity: 1;
   visibility: visible;
 }
-.body__modal-delete-article h2 {
-  font-size: 18px;
-  font-weight: normal;
-  margin-bottom: 10px;
-}
-.body__modal-delete-article p {
-  font-size: 13px;
-}
 .body__modal-close {
   position: absolute;
   top: 10px;
@@ -47,4 +39,25 @@
 }
 .body__graph-view {
   height: 100%;
+}
+
+.article-wrap {
+  width: 50%;
+  height: 100%;
+  background-color: #e5eaee;
+  padding: 20px 40px;
+  float: right;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  box-shadow: -4px 0px 6px rgb(88, 88, 88);
+  overflow-x: visible;
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+}
+.article-wrap__btn-column {
+  width: 100%;
+  height: 45px;
+  margin: 0 auto 10px auto;
+  line-height: 45px;
 }
